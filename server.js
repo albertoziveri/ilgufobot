@@ -246,6 +246,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    
 	    resoconto["email"] = invoiceData["indirizzo_via"];
 	    msg.say(doc_id);
+	    msg.say(doc_id);
 	    msg.say(resoconto["email"]);
 	    
 		msg
@@ -283,7 +284,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  var dataEmail = {}
 	  dataEmail["api_uid"] = "12078";
 	  dataEmail["api_key"] = "841b369a3268661b0ca1e768337232b6";
-	  dataEmail["id"] = resoconto["doc_id"];
+	  dataEmail["id"] = doc_id;
 	  dataEmail["mail_mittente"] = "crew@fromowl.com";
 	  dataEmail["mail_destinatario"] = resoconto["email"];
 	  dataEmail["includi_documento"] = true;

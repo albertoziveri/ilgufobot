@@ -156,12 +156,13 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	})
 	
 	
-	slapp.route('indirizzo', (msg) => {
+	slapp.route('indirizzo', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
 	  
 	  invoiceData["nome"] = response;
 	  
-	  msg.say("Bene che abbiamo venduto qualcos a "+response+", ma dimmi, che indirizzo email ha?").route('indirizzo', invoiceData,20)    
+	  msg.say("Bene che abbiamo venduto qualcos a "+response+", ma dimmi, che indirizzo email ha?").route('indirizzo', invoiceData,20) 
+	  return   
 	  
 	})
 	

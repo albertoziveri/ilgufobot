@@ -131,10 +131,10 @@ slapp.message('aggiungi persona', 'direct_message', (msg) => {
     })
   // handle the response with this route passing state
   // and expiring the conversation after 60 seconds
-  .route('handleDoitConfirmation', state, 20)
+  .route('handleDoitConfirmation', null, 20)
 })
 
-slapp.route('handleDoitConfirmation', (msg, state) => {
+slapp.route('handleDoitConfirmation', (msg) => {
   // if they respond with anything other than a button selection,
   // get them back on track
   if (msg.type !== 'action') {
@@ -143,7 +143,7 @@ slapp.route('handleDoitConfirmation', (msg, state) => {
       // notice we have to declare the next route to handle the response
       // every time. Pass along the state and expire the conversation
       // 60 seconds from now.
-      .route('handleDoitConfirmation', state, 20)
+      .route('handleDoitConfirmation', null, 20)
     return
   }
 

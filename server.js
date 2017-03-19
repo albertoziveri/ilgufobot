@@ -155,6 +155,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  invoiceData["mostra_info_pagamento"] = "false";
 	  invoiceData["prezzi_ivati"] = "true";
 	  invoiceData["valuta"] = "EUR";
+	  invoiceData["lista_articoli"] = [{}];
 	  
 	  msg.say('Ok allora qual è la ragione sociale?').route('indirizzo', invoiceData,20)    
 	})
@@ -182,9 +183,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
-	  
-	  invoiceData["lista_articoli"][]["nome"] = response;
-	  
+	  invoiceData["lista_articoli"][0]["nome"] = response;
 	  msg.say(`Hai inserito il primo prodotto, ecco quello che mi hai detto finora \`\`\`${JSON.stringify(state)}\`\`\``)
 	  return   
 	  

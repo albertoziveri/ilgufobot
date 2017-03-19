@@ -152,10 +152,11 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  invoiceData["api_uid"] = "12078";
 	  invoiceData["api_key"] = "841b369a3268661b0ca1e768337232b6";
 	  invoiceData["id_template"] = "2201";
-	  invoiceData["mostra_info_pagamento"] = "false";
-	  invoiceData["prezzi_ivati"] = "true";
+	  invoiceData["mostra_info_pagamento"] = false;
+	  invoiceData["prezzi_ivati"] = true;
 	  invoiceData["valuta"] = "EUR";
 	  invoiceData["lista_articoli"] = [{}];
+	  invoiceData["lista_pagamenti"] = [{}];
 	  
 	  msg.say('Ok allora qual è la ragione sociale?').route('indirizzo', invoiceData,20)    
 	})
@@ -191,7 +192,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	slapp.route('quantita_prodotto', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
-	  invoiceData["lista_articoli"][0]["quantita"] = response;
+	  var units = parseFloat(response);
+	  invoiceData["lista_articoli"][0]["quantita"] = units;
 	  msg.say("Ora dimmi il prezzo per unità! Inclusivo di IVA").route('prezzo_prodotto', invoiceData,20) 
 	})
 	
@@ -201,7 +203,19 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  var price = parseFloat(response);
 	  invoiceData["lista_articoli"][0]["prezzo_lordo"] = price;
 	  msg.say("Perfetto! Quindi hai venduto "+invoiceData["lista_articoli"][0]["nome"]+" unità di "+invoiceData["lista_articoli"][0]["quantita"]+" al prezzo di "+invoiceData["lista_articoli"][0]["prezzo_lordo"]+" "+invoiceData["valuta"])
+	
+	//pagamenti  
+	var MyDate = new Date();
+	var MyDateString;
+	MyDate.setDate(MyDate.getDate());
+	MyDateString = ('0' + MyDate.getDate()).slice(-2) + '/' + ('0' + (MyDate.getMonth()+1)).slice(-2) + '/' + MyDate.getFullYear();  
+	invoiceData["lista_pagamenti"][0]["data_scadenza"] = MyDateString;
+	invoiceData["lista_pagamenti"][0]["importo"] = price;
+	invoiceData["lista_pagamenti"][0]["metodo"] = "cassa";
+	invoiceData["lista_pagamenti"][0]["data_saldo"] = MyDateString;
 	  
+	  
+	  //procedo a finire
 	   var requestData = JSON.stringify(invoiceData);
 		msg.say(requestData)
 

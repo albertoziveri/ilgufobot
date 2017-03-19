@@ -61,7 +61,7 @@ slapp
     state.status = text
 
     msg
-      .say(`Ok then. What's your favorite colrror?`)
+      .say(`Ok then. What's your favorite color?`)
       .route('color', state)
   })
   .route('color', (msg, state) => {
@@ -121,7 +121,7 @@ slapp.message('.*', ['direct_mention', 'direct_message'], (msg) => {
 slapp.message('aggiungi persona', ['mention', 'direct_message'], (msg) => {
   // You can provide a list of responses, and a random one will be chosen
   // You can also include slack emoji in your responses
-	msg.say(['Inizio ad aggiungerla'])
+	msg.say('Inizio ad aggiungerla')
 
 })
 

@@ -111,7 +111,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 
 ////ALBIADD
-slapp.message('troia', ['mention', 'direct_message'], (msg) => {
+slapp.message('troia ciao', ['mention', 'direct_message'], (msg) => {
   // You can provide a list of responses, and a random one will be chosen
   // You can also include slack emoji in your responses
 	msg.say('Inizio ad aggiungerla')

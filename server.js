@@ -131,7 +131,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    })
 	  // handle the response with this route passing state
 	  // and expiring the conversation after 20 seconds
-	  .route('company', null, 20)
+	  var invoiceData = [];
+	  .route('company', invoiceData, 20)
 	})
 	
 	//ragione sociale
@@ -148,7 +149,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  }
 	  
 	  //INIZIO A RIEMPIRE dato che ha risposto SI
-	  var invoiceData = [];
 	  invoiceData["api_uid"] = "12078";
 	  invoiceData["api_key"] = "841b369a3268661b0ca1e768337232b6";
 	  invoiceData["id_template"] = "2201";
@@ -166,7 +166,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  
 	  invoiceData["nome"] = response;
 	  
-	  msg.say("Bene che abbiamo venduto qualcosa a"+response+", ma dimmi, che indirizzo email ha?").route('indirizzo', invoiceData,20) 
+	  msg.say("Bene che abbiamo venduto qualcosa a "+response+", ma dimmi, che indirizzo email ha?").route('articolo', invoiceData,20) 
 	  
 	})
 	

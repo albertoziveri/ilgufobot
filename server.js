@@ -115,6 +115,54 @@ slapp.message('troia ciao', ['mention', 'direct_message'], (msg) => {
   // You can provide a list of responses, and a random one will be chosen
   // You can also include slack emoji in your responses
 	msg.say('Inizio ad aggiungerla')
+
+    // JSON to be passed to the QPX Express API
+    var requestData = {
+ "api_uid": "12078",
+  "api_key": "841b369a3268661b0ca1e768337232b6",
+  "nome": "Mario Rossi4",
+  "referente": "",
+  "indirizzo_via": "Via delle Betulle, 123",
+  "indirizzo_cap": "21012",
+  "indirizzo_citta": "Curno",
+  "indirizzo_provincia": "BG",
+  "indirizzo_extra": "",
+  "paese": "Italia",
+  "paese_iso": "IT",
+  "mail": "info@mariorossi.it",
+  "tel": "012345678",
+  "fax": "012345678",
+  "piva": "IT1234567890",
+  "cf": "ABCDEF12G34H567I",
+  "termini_pagamento": "0",
+  "pagamento_fine_mese": false,
+  "cod_iva_default": 0,
+  "extra": "",
+  "PA": false,
+  "PA_codice": ""
+  }
+    
+
+    // QPX REST API URL (I censored my api key)
+    url = "https://api.fattureincloud.it:443/v1/clienti/nuovo"
+
+    // fire request
+    request({
+    url: url,
+    method: "POST",
+    json: requestData
+}, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(body)
+        }
+        else {
+
+            console.log("error: " + error)
+            console.log("response.statusCode: " + response.statusCode)
+            console.log("response.statusText: " + response.statusText)
+        }
+    })
+	
 })
 
 

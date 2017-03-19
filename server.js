@@ -283,13 +283,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  dataEmail["mail_mittente"] = "crew@fromowl.com";
 	  dataEmail["mail_destinatario"] = resoconto["email"];
 	dataEmail["oggetto"] = "Our invoice for you";
-		  dataEmail["messaggio"] = "Hello,
-	to see our invoice here.
-	
-	{{allegati}}
-	
-	Best regards,
-	Divisible Odd srls";
+		  dataEmail["messaggio"] = "Hello, to see our invoice here.<br /> {{allegati}} Best regards,Divisible Odd srls";
 	
 		  
 	    // QPX REST API URL (I censored my api key)

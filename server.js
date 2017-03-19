@@ -229,7 +229,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	}, function (error, response, body) {
 	        if (!error && response.statusCode === 200) {
 	            console.log(body)
-	            resoconto["doc_id"] = body["new_id"];
+	            var response = JSON.parse(body);
+	            resoconto["doc_id"] = response.new_id;
 	            resoconto["email"] = invoiceData["indirizzo_via"];
 	        }
 	        else {

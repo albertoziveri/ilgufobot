@@ -216,9 +216,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	invoiceData["lista_pagamenti"][0]["data_saldo"] = MyDateString;
 	  
 	  
-	  //procedo a finire
-		msg.say(requestData)
-
 	
 	    // QPX REST API URL (I censored my api key)
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"

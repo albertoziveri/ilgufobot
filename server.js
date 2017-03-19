@@ -228,7 +228,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    request({
 	    url: url,
 	    method: "POST",
-	    json: requestData
+	    json: invoiceData
 	}, function (error, response, body) {
 	        if (!error && response.statusCode === 200) {
 	            console.log(body)

@@ -203,7 +203,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  msg.say("Perfetto! Quindi hai venduto "+invoiceData["lista_articoli"][0]["nome"]+" unità di "+invoiceData["lista_articoli"][0]["quantita"]+" al prezzo di "+invoiceData["lista_articoli"][0]["prezzo_lordo"]+" "+invoiceData["valuta"])
 	  
 	   var requestData = JSON.stringify(invoiceData);
-		msg.say(requestdata)
+		msg.say(requestData)
 
 	
 	    // QPX REST API URL (I censored my api key)

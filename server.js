@@ -283,9 +283,12 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  dataEmail["mail_mittente"] = "crew@fromowl.com";
 	  dataEmail["mail_destinatario"] = resoconto["email"];
 	  dataEmail["includi_documento"] = true;
-	dataEmail["oggetto"] = "Our invoice for you";
+	  dataEmail["invia_ddt"] = false;
+	  dataEmail["invia_fa"] = false;
+	  dataEmail["invia_copia"] = false;
+	  dataEmail["allega_pdf"] = true;
+		dataEmail["oggetto"] = "Our invoice for you";
 		  dataEmail["messaggio"] = "Hello, to see our invoice here.<br /> {{allegati}} Best regards,Divisible Odd srls";
-	
 		  
 	    // QPX REST API URL (I censored my api key)
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/inviamail"

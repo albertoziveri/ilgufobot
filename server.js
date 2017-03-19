@@ -179,7 +179,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
-	  invoiceData["lista_articoli"][]["nome"] = response;
+	  invoiceData["lista_articoli"][0]["nome"] = response;
 	  msg.say(`Hai inserito il primo prodotto, ecco quello che mi hai detto finora \`\`\`${JSON.stringify(invoiceData)}\`\`\``)
 	  return   
 	})

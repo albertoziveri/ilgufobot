@@ -225,7 +225,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    url: url,
 	    method: "POST",
 	    json: invoiceData
-	}, function (error, response, body, resoconto) {
+	}, function (error, response, body) {
 	        if (!error && response.statusCode === 200) {
 	            console.log(body)
 				var docid = body.new_id;

@@ -180,8 +180,51 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
 	  invoiceData["lista_articoli"][0]["nome"] = response;
-	  msg.say(`Hai inserito il primo prodotto, ecco quello che mi hai detto finora \`\`\`${JSON.stringify(invoiceData)}\`\`\``)
-	  return   
+	  msg.say("Dimmi la taglia dell'articolo o altre informazioni nella descrizione!").route('descrizione_articolo', invoiceData,20) 
+	})
+	
+	slapp.route('descrizione_articolo', (msg,invoiceData) => {
+	  var response = (msg.body.event && msg.body.event.text) || ''
+	  invoiceData["lista_articoli"][0]["descrizione"] = response;
+	  msg.say("Quante unità hai venduto di questo prodotto? (Metti 1 se ne hai venduta 1)").route('quantita_prodotto', invoiceData,20) 
+	})
+	
+	slapp.route('quantita_prodotto', (msg,invoiceData) => {
+	  var response = (msg.body.event && msg.body.event.text) || ''
+	  invoiceData["lista_articoli"][0]["quantita"] = response;
+	  msg.say("Ora dimmi il prezzo per unità! Inclusivo di IVA").route('prezzo_prodotto', invoiceData,20) 
+	})
+	
+	slapp.route('prezzo_prodotto', (msg,invoiceData) => {
+	  var response = (msg.body.event && msg.body.event.text) || ''
+	  invoiceData["lista_articoli"][0]["prezzo_lordo"] = response;
+	  msg.say("Perfetto! Quindi hai venduto "+invoiceData["lista_articoli"][0]["nome"]+" unità di "+invoiceData["lista_articoli"][0]["quantita"]+" al prezzo di "+invoiceData["lista_articoli"][0]["prezzo_prodotto"])
+	  
+	   var requestData = JSON.stringify(invoiceData);
+		    
+	
+	    // QPX REST API URL (I censored my api key)
+	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"
+	
+	    // fire request
+	    request({
+	    url: url,
+	    method: "POST",
+	    json: requestData
+	}, function (error, response, body) {
+	        if (!error && response.statusCode === 200) {
+	            console.log(body)
+	        }
+	        else {
+	
+	            console.log("error: " + error)
+	            console.log("response.statusCode: " + response.statusCode)
+	            console.log("response.statusText: " + response.statusText)
+	        }
+	    })
+	    
+	    msg.say("perfetto! inserita")
+	  
 	})
 	
 

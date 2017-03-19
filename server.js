@@ -221,6 +221,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"
 		var resoconto = {};
 		
+		var EventEmitter = require("events").EventEmitter;
+		var data = new EventEmitter();
+
+		
 	    // fire request
 	    request({
 	    url: url,
@@ -237,13 +241,17 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	            console.log("response.statusText: " + response.statusText)
 	            return
 	        }
-	        var doc_id = body.new_id;
-	        msg.say(doc_id);
-	         callback(doc_id);
-	        return doc_id;
+	        
+	        //aggiorno ID ottenuto
+	        data = body;
+		    data.emit('update');
 	    })
 	    
 	    resoconto["email"] = invoiceData["indirizzo_via"];
+	    var doc_id ="";
+		data.on('update', function () {
+		    doc_id = data.new_id;
+		});
 	    msg.say(doc_id);
 	    msg.say(doc_id);
 	    msg.say(resoconto["email"]);

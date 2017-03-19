@@ -197,7 +197,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	slapp.route('prezzo_prodotto', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
-	  String text = String(response);
 	  double price = Double.parseDouble(response);
 	  invoiceData["lista_articoli"][0]["prezzo_lordo"] = price;
 	  msg.say("Perfetto! Quindi hai venduto "+invoiceData["lista_articoli"][0]["nome"]+" unità di "+invoiceData["lista_articoli"][0]["quantita"]+" al prezzo di "+invoiceData["lista_articoli"][0]["prezzo_lordo"]+" "+invoiceData["valuta"])

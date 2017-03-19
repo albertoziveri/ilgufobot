@@ -230,7 +230,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	}, function (error, response, body) {
 	        if (!error && response.statusCode === 200) {
 	            console.log(body)
-	            bodyresponse = JSON.parse(body);
+	            console.log(body.new_id)
+	            cosole.log("ciao sfigato");
 	        }
 	        else {
 				msg.say("Fattura non inserita, procedere manualmente.")

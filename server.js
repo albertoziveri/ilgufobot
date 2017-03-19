@@ -219,7 +219,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	    // QPX REST API URL (I censored my api key)
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"
-		var resoconto = {}
+		var resoconto = {};
 		
 	    // fire request
 	    request({
@@ -229,8 +229,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	}, function (error, response, body) {
 	        if (!error && response.statusCode === 200) {
 	            console.log(body)
-				var docid = body.new_id;
-				return docid
 	        }
 	        else {
 				msg.say("Fattura non inserita, procedere manualmente.")
@@ -239,10 +237,12 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	            console.log("response.statusText: " + response.statusText)
 	            return
 	        }
+	        
+	        resoconto["docid"] = body.new_id;
 	    })
 	    
 	    resoconto["email"] = invoiceData["indirizzo_via"];
-	    msg.say(docid);
+	    msg.say(resoconto["docid"]);
 	    msg.say(resoconto["email"]);
 	    
 		msg
@@ -280,7 +280,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  var dataEmail = {}
 	  dataEmail["api_uid"] = "12078";
 	  dataEmail["api_key"] = "841b369a3268661b0ca1e768337232b6";
-	  dataEmail["id"] = docid;
+	  dataEmail["id"] = resoconto["doc_id"];
 	  dataEmail["mail_mittente"] = "crew@fromowl.com";
 	  dataEmail["mail_destinatario"] = resoconto["email"];
 	  dataEmail["includi_documento"] = true;

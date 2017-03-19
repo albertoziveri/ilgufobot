@@ -202,6 +202,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  response = response.replace(/,/g, '.');
 	  var price = parseFloat(response);
 	  invoiceData["lista_articoli"][0]["prezzo_lordo"] = price;
+	  invoiceData["lista_articoli"][0]["cod_iva"] = 0;
 	  msg.say("Perfetto! Quindi hai venduto "+invoiceData["lista_articoli"][0]["nome"]+" unità di "+invoiceData["lista_articoli"][0]["quantita"]+" al prezzo di "+invoiceData["lista_articoli"][0]["prezzo_lordo"]+" "+invoiceData["valuta"])
 	
 	//pagamenti  

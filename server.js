@@ -286,6 +286,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  dataEmail["invia_ddt"] = false;
 	  dataEmail["invia_fa"] = false;
 	  dataEmail["invia_copia"] = false;
+	  dataEmail["includi_allegato"] = true;
 	  dataEmail["allega_pdf"] = true;
 		dataEmail["oggetto"] = "Our invoice for you";
 		  dataEmail["messaggio"] = "Hello, to see our invoice here.<br /> {{allegati}} Best regards,Divisible Odd srls";

@@ -136,7 +136,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	})
 	
 	//ragione sociale
-	slapp.route('company', (msg) => {
+	slapp.route('company', (msg,invoiceData) => {
 	  let answer = msg.body.actions[0].value
 	  if (answer !== 'yes') {
 	    // the answer was not affirmative

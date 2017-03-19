@@ -115,7 +115,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	// if a user says "do it" in a DM
 	slapp.message('aggiungi fattura', 'direct_message', (msg) => {
 	  // respond with an interactive message with buttons Yes and No
-	  var invoiceData = [];
+	  var invoiceData = {};
 	  msg
 	  .say({
 	    text: '',
@@ -179,7 +179,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
-	  invoiceData["lista_articoli"][0]["nome"] = response;
+	  invoiceData["lista_articoli"][]["nome"] = response;
 	  msg.say(`Hai inserito il primo prodotto, ecco quello che mi hai detto finora \`\`\`${JSON.stringify(invoiceData)}\`\`\``)
 	  return   
 	})

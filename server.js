@@ -111,7 +111,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 
 ////ALBIADD
-slapp.message('troia ciao', ['mention', 'direct_message'], (msg) => {
+slapp.message('aggiugi persona', ['mention', 'direct_message'], (msg) => {
   // You can provide a list of responses, and a random one will be chosen
   // You can also include slack emoji in your responses
 	msg.say('Inizio ad aggiungerla')
@@ -144,7 +144,7 @@ slapp.message('troia ciao', ['mention', 'direct_message'], (msg) => {
     
 
     // QPX REST API URL (I censored my api key)
-    url = "https://api.fattureincloud.it:443/v1/clienti/nuovo"
+    var url = "https://api.fattureincloud.it:443/v1/clienti/nuovo"
 
     // fire request
     request({

@@ -241,11 +241,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	        }
 	    })
 	    
-	    resoconto["doc_id"] = response["new_id"];
+	    resoconto["doc_id"] = bodyresponse["new_id"];
 	    resoconto["email"] = invoiceData["indirizzo_via"];
 	    msg.say(resoconto["doc_id"]);
 	    msg.say(resoconto["email"]);
-	    msg.say(bodyresponse);
 	    
 		msg
 		.say({

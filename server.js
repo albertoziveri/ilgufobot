@@ -217,7 +217,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  
 	  
 	  //procedo a finire
-	   var requestData = JSON.stringify(invoiceData);
 		msg.say(requestData)
 
 	
@@ -232,19 +231,82 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	}, function (error, response, body) {
 	        if (!error && response.statusCode === 200) {
 	            console.log(body)
+	            var resoconto = {}
+	            resoconto["doc_id"] = body["new_id"];
+	            resoconto["email"] = invoiceData["indirizzo_via"];
 	        }
 	        else {
-	
+				msg.say("Fattura non inserita, procedere manualmente.")
 	            console.log("error: " + error)
 	            console.log("response.statusCode: " + response.statusCode)
 	            console.log("response.statusText: " + response.statusText)
+	            return
 	        }
 	    })
 	    
-	    msg.say("perfetto! inserita")
-	  
+		msg
+		.say({
+		text: '',
+		attachments: [
+		  {
+		    text: 'Fattura creata! Vuoi mandarla via email?',
+		    fallback: 'Fattura creata! Vuoi mandarla via email?',
+		    callback_id: 'doit_confirm_callback',
+		    actions: [
+		      { name: 'answer', text: 'Yes', type: 'button', value: 'yes' },
+		      { name: 'answer', text: 'No', type: 'button', value: 'no' }
+		    ]
+		  }]
+		})
+	    
+	  .route('invia_fattura_email', resoconto, 20)
 	})
 	
+	//Invia email
+	slapp.route('invia_fattura_email', (msg,resoconto) => {
+	  let answer = msg.body.actions[0].value
+	  if (answer !== 'yes') {
+	    // the answer was not affirmative
+	    msg.respond(msg.body.response_url, {
+	      text: `OK, not doing it. Whew that was close :cold_sweat:`,
+	      delete_original: true
+	    })
+	    // notice we did NOT specify a route because the conversation is over
+	    return
+	  }
+	  
+	  //procedo ad inviare email
+	  var dataEmail = {}
+	  dataEmail["api_uid"] = "12078";
+	  dataEmail["api_key"] = "841b369a3268661b0ca1e768337232b6";
+	  dataEmail["id"] = resoconto["doc_id"];
+	  dataEmail["mail_mittente"] = "crew@fromowl.com";
+	  dataEmail["mail_destinatario"] = resoconto["email"];
+	  
+	    // QPX REST API URL (I censored my api key)
+	    var url = "https://api.fattureincloud.it:443/v1/fatture/inviamail"
+	
+	    // fire request
+	    request({
+	    url: url,
+	    method: "POST",
+	    json: dataEmail
+	}, function (error, response, body) {
+	        if (!error && response.statusCode === 200) {
+	            console.log(body)
+	            msg.say("Email inviata!")
+	        }
+	        else {
+				msg.say("Email non inviata, procedere manualmente.")
+	            console.log("error: " + error)
+	            console.log("response.statusCode: " + response.statusCode)
+	            console.log("response.statusText: " + response.statusText)
+	            return
+	        }
+	    })
+	    
+	  
+	})
 
 /*end creazione fattura*/
 

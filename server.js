@@ -241,6 +241,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	        
 	        doc_id = body.new_id;
 	        msg.say(doc_id);
+	        return doc_id;
 	    })
 	    
 	    resoconto["email"] = invoiceData["indirizzo_via"];

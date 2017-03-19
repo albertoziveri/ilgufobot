@@ -220,7 +220,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    // QPX REST API URL (I censored my api key)
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"
 		var resoconto = {};
-		var doc_id = "ciao";
 		
 	    // fire request
 	    request({
@@ -238,9 +237,9 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	            console.log("response.statusText: " + response.statusText)
 	            return
 	        }
-	        
-	        doc_id = body.new_id;
+	        var doc_id = body.new_id;
 	        msg.say(doc_id);
+	         callback(doc_id);
 	        return doc_id;
 	    })
 	    

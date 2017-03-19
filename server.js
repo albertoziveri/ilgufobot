@@ -167,7 +167,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  invoiceData["nome"] = response;
 	  
 	  msg.say("Bene che abbiamo venduto qualcosa a "+response+", ma dimmi, che indirizzo email ha?").route('articolo', invoiceData,20) 
-	  
 	})
 	
 	slapp.route('articolo', (msg,invoiceData) => {
@@ -176,7 +175,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  invoiceData["indirizzo_via"] = response;
 	  
 	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?").route('dettagli_articolo', invoiceData,20) 
-	  
 	})
 	
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
@@ -184,7 +182,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  invoiceData["lista_articoli"][0]["nome"] = response;
 	  msg.say(`Hai inserito il primo prodotto, ecco quello che mi hai detto finora \`\`\`${JSON.stringify(invoiceData)}\`\`\``)
 	  return   
-	  
 	})
 	
 

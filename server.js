@@ -151,6 +151,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  var invoiceData = [];
 	  invoiceData["api_uid"] = "12078";
 	  invoiceData["api_key"] = "841b369a3268661b0ca1e768337232b6";
+	  invoiceData["id_template"] = "2201";
+	  invoiceData["mostra_info_pagamento"] = "false";
+	  invoiceData["prezzi_ivati"] = "true";
+	  invoiceData["valuta"] = "EUR";
 	  
 	  msg.say('Ok allora qual è la ragione sociale?').route('indirizzo', invoiceData,20)    
 	})
@@ -161,7 +165,27 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  
 	  invoiceData["nome"] = response;
 	  
-	  msg.say("Bene che abbiamo venduto qualcos a "+response+", ma dimmi, che indirizzo email ha?").route('indirizzo', invoiceData,20) 
+	  msg.say("Bene che abbiamo venduto qualcosa a"+response+", ma dimmi, che indirizzo email ha?").route('indirizzo', invoiceData,20) 
+	  return   
+	  
+	})
+	
+	slapp.route('articolo', (msg,invoiceData) => {
+	  var response = (msg.body.event && msg.body.event.text) || ''
+	  
+	  invoiceData["indirizzo_via"] = response;
+	  
+	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?").route('dettagli_articolo', invoiceData,20) 
+	  return   
+	  
+	})
+	
+	slapp.route('dettagli_articolo', (msg,invoiceData) => {
+	  var response = (msg.body.event && msg.body.event.text) || ''
+	  
+	  invoiceData["lista_articoli"][]["nome"] = response;
+	  
+	  msg.say(`Hai inserito il primo prodotto, ecco quello che mi hai detto finora \`\`\`${JSON.stringify(state)}\`\`\``)
 	  return   
 	  
 	})

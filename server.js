@@ -112,115 +112,61 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 
 //PROCESSO AGGIUNTA FATTURA
-// if a user says "do it" in a DM
-slapp.message('aggiungi persona', 'direct_message', (msg) => {
-  // respond with an interactive message with buttons Yes and No
-  msg
-  .say({
-    text: '',
-    attachments: [
-      {
-        text: 'Are you sure?',
-        fallback: 'Are you sure?',
-        callback_id: 'doit_confirm_callback',
-        actions: [
-          { name: 'answer', text: 'Yes', type: 'button', value: 'yes' },
-          { name: 'answer', text: 'No', type: 'button', value: 'no' }
-        ]
-      }]
-    })
-  // handle the response with this route passing state
-  // and expiring the conversation after 60 seconds
-  .route('handleDoitConfirmation', null, 20)
-})
+	// if a user says "do it" in a DM
+	slapp.message('aggiungi fattura', 'direct_message', (msg) => {
+	  // respond with an interactive message with buttons Yes and No
+	  msg
+	  .say({
+	    text: '',
+	    attachments: [
+	      {
+	        text: 'Are you sure?',
+	        fallback: 'Are you sure?',
+	        callback_id: 'doit_confirm_callback',
+	        actions: [
+	          { name: 'answer', text: 'Yes', type: 'button', value: 'yes' },
+	          { name: 'answer', text: 'No', type: 'button', value: 'no' }
+	        ]
+	      }]
+	    })
+	  // handle the response with this route passing state
+	  // and expiring the conversation after 20 seconds
+	  .route('company', null, 20)
+	})
+	
+	//ragione sociale
+	slapp.route('company', (msg) => {
+	  let answer = msg.body.actions[0].value
+	  if (answer !== 'yes') {
+	    // the answer was not affirmative
+	    msg.respond(msg.body.response_url, {
+	      text: `OK, not doing it. Whew that was close :cold_sweat:`,
+	      delete_original: true
+	    })
+	    // notice we did NOT specify a route because the conversation is over
+	    return
+	  }
+	  
+	  //INIZIO A RIEMPIRE dato che ha risposto SI
+	  var invoiceData = [];
+	  invoiceData["api_uid"] = "12078";
+	  invoiceData["api_key"] = "841b369a3268661b0ca1e768337232b6";
+	  
+	  msg.say('Ok allora qual è la ragione sociale?').route('indirizzo', invoiceData,20)    
+	})
+	
+	
+	slapp.route('indirizzo', (msg) => {
+	  var response = (msg.body.event && msg.body.event.text) || ''
+	  
+	  invoiceData["nome"] = response;
+	  
+	  msg.say("Bene che abbiamo venduto qualcos a "+response+", ma dimmi, che indirizzo email ha?").route('indirizzo', invoiceData,20)    
+	  
+	})
+	
 
-slapp.route('handleDoitConfirmation', (msg) => {
-  // if they respond with anything other than a button selection,
-  // get them back on track
-  if (msg.type !== 'action') {
-    msg
-      .say('Please choose a Yes or No button :wink:')
-      // notice we have to declare the next route to handle the response
-      // every time. Pass along the state and expire the conversation
-      // 60 seconds from now.
-      .route('handleDoitConfirmation', null, 20)
-    return
-  }
-
-  let answer = msg.body.actions[0].value
-  if (answer !== 'yes') {
-    // the answer was not affirmative
-    msg.respond(msg.body.response_url, {
-      text: `OK, not doing it. Whew that was close :cold_sweat:`,
-      delete_original: true
-    })
-    // notice we did NOT specify a route because the conversation is over
-    return
-  }
-  
-  //IF THE ANSWER WAS AFFIRMATIVE
-  // use the state that's been passed through the flow to figure out the
-  // elapsed time
-    // JSON
-    var requestData = {
- "api_uid": "12078",
-  "api_key": "841b369a3268661b0ca1e768337232b6",
-  "nome": "Mario Rossi5",
-  "referente": "",
-  "indirizzo_via": "Via delle Betulle, 123",
-  "indirizzo_cap": "21012",
-  "indirizzo_citta": "Curno",
-  "indirizzo_provincia": "BG",
-  "indirizzo_extra": "",
-  "paese": "Italia",
-  "paese_iso": "IT",
-  "mail": "info@mariorossi.it",
-  "tel": "012345678",
-  "fax": "012345678",
-  "piva": "IT1234567890",
-  "cf": "ABCDEF12G34H567I",
-  "termini_pagamento": "0",
-  "pagamento_fine_mese": false,
-  "cod_iva_default": 0,
-  "extra": "",
-  "PA": false,
-  "PA_codice": ""
-  }
-    
-
-    // QPX REST API URL (I censored my api key)
-    var url = "https://api.fattureincloud.it:443/v1/clienti/nuovo"
-
-    // fire request
-    request({
-    url: url,
-    method: "POST",
-    json: requestData
-}, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            console.log(body)
-        }
-        else {
-
-            console.log("error: " + error)
-            console.log("response.statusCode: " + response.statusCode)
-            console.log("response.statusText: " + response.statusText)
-        }
-    })
-  
-  
-  msg.respond(msg.body.response_url, {
-    text: `INserito!`,
-    delete_original: true
-  })
-
-  // simulate doing some work and send a confirmation.
-  setTimeout(() => {
-    msg.say('I "did it"')
-  }, 3000)
-})
-
-
+/*end creazione fattura*/
 
 
 

@@ -220,7 +220,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    // QPX REST API URL (I censored my api key)
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"
 		var resoconto = {}
-		var response ="";
 		
 	    // fire request
 	    request({
@@ -230,7 +229,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	}, function (error, response, body) {
 	        if (!error && response.statusCode === 200) {
 	            console.log(body)
-	            response = JSON.parse(body);
+	            var response = JSON.parse(body);
 	        }
 	        else {
 				msg.say("Fattura non inserita, procedere manualmente.")
@@ -241,7 +240,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	        }
 	    })
 	    
-	    resoconto["doc_id"] = response.new_id;
+	    resoconto["doc_id"] = response["new_id"];
 	    resoconto["email"] = invoiceData["indirizzo_via"][0];
 	    msg.say(resoconto["doc_id"]);
 	    msg.say(resoconto["email"]);

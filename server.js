@@ -167,7 +167,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  invoiceData["nome"] = response;
 	  
 	  msg.say("Bene che abbiamo venduto qualcosa a"+response+", ma dimmi, che indirizzo email ha?").route('indirizzo', invoiceData,20) 
-	  return   
 	  
 	})
 	
@@ -177,7 +176,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  invoiceData["indirizzo_via"] = response;
 	  
 	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?").route('dettagli_articolo', invoiceData,20) 
-	  return   
 	  
 	})
 	

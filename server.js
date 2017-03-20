@@ -241,14 +241,24 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  var price = parseFloat(response);
 	  invoiceData["lista_articoli"][0]["prezzo_lordo"] = price;
 	  invoiceData["lista_articoli"][0]["cod_iva"] = 0;
-	
-		//pagamenti  
+	  
+	  
+	  //DA QUI INIZIA LA FINE DELLA FATTURA, CI SARà DA DIVIDERE!!
+	  var objectProducts = invoiceData["lista_articoli"];
+
+		//PAGAMENTI CON CALCOLO DEL TOTALE  
 		var MyDate = new Date();
 		var MyDateString;
 		MyDate.setDate(MyDate.getDate());
 		MyDateString = ('0' + MyDate.getDate()).slice(-2) + '/' + ('0' + (MyDate.getMonth()+1)).slice(-2) + '/' + MyDate.getFullYear();  
 		invoiceData["lista_pagamenti"][0]["data_scadenza"] = MyDateString;
-		invoiceData["lista_pagamenti"][0]["importo"] = price;
+		
+		//CALCOLO TOTALE
+		var total_price = 0;
+		Object.keys(objectProducts).forEach(function() {
+		    total_price = total_price + ( objectProducts[0]["prezzo_lordo"] *  objectProducts[0]["quantita"]);
+		});		    
+		invoiceData["lista_pagamenti"][0]["importo"] = total_price;
 		invoiceData["lista_pagamenti"][0]["metodo"] = "cassa";
 		invoiceData["lista_pagamenti"][0]["data_saldo"] = MyDateString;
 		
@@ -311,7 +321,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    
 		    //Creo resoconto per ogni prodotto
 		    resoconto["prodotti_venduti"] = [];
-		    var objectProducts = invoiceData["lista_articoli"];
 			Object.keys(objectProducts).forEach(function() {
 				var prodotto_venduto = {};
 			    prodotto_venduto["title"] =objectProducts[0]["nome"];
@@ -320,6 +329,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 			    console.log(prodotto_venduto);
 			    resoconto["prodotti_venduti"].push(prodotto_venduto);
 			});		    
+			
+			console.log(resoconto["prodotti_venduti"]);
 		    
 			msg
 			.say(
@@ -332,9 +343,9 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 				            "pretext": "Ecco un resoconto della tua fattura, clicca sul link grigio per vedere il PDF.",
 				            "author_name": "Fattura a"+invoiceData["nome"],
 				            "author_link": resoconto["link_doc"],
-				            "title": invoiceData["lista_articoli"][0]["prezzo_lordo"], //aggiornare con totale
+				            "title": "Totale "+invoiceData["lista_articoli"][0]["prezzo_lordo"]+invoiceData["lista_articoli"][0]["valuta"], //aggiornare con totale
 				            "text": "Altre info",
-				            "fields": [resoconto["prodotti_venduti"]],
+				            "fields": resoconto["prodotti_venduti"],
 				            "ts": 123456789
 				        }
 				    ]

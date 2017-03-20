@@ -7,15 +7,8 @@ const Context = require('slapp-context-beepboop')
 
 ////ALBIADD
 const request = require("request")
-const base = require('airtable').base('appQrH3hphwlYu2F4');
+const base = require('airtable').base('keyzbVDpl49AwQZJX');
 
-//ALBIADD AIRTABLE
-const Airtable = require('airtable');
-Airtable.configure({
-    endpointUrl: 'https://api.airtable.com',
-    apiKey: 'keyzbVDpl49AwQZJX'
-});
-var base = Airtable.base('appQrH3hphwlYu2F4');
 //END ALBIADD
 
 

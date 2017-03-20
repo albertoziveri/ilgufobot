@@ -217,7 +217,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 		function show_results(prodotti) {
 			 // We want this to show the "results" from the callback function.
-			 alert(load_values_from_server);
 			
 			//costruisco il messaggio
 			var message = {}

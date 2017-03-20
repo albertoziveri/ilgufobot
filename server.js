@@ -220,7 +220,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 			
 			//costruisco il messaggio
 			var message = {}
-			message["text"] = "Ciao";
+			message["text"] = "";
 			message["attachments"] = [{}];
 			message["attachments"][0]["text"] = "Quale prodotto?";
 			message["attachments"][0]["fallback"] = "Quale prodotto?"; 
@@ -250,15 +250,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
 	  let answer = msg.body.actions[0].value
-	  if (answer !== 'yes') {
-	    // the answer was not affirmative
-	    msg.respond(msg.body.response_url, {
-	      text: `OK, not doing it. Whew that was close :cold_sweat:`,
-	      delete_original: true
-	    })
-	    // notice we did NOT specify a route because the conversation is over
-	    return
-	  }
+
 	  invoiceData["lista_articoli"][0]["nome"] = answer;
 	  msg.say("Dimmi la taglia dell'articolo o altre informazioni nella descrizione!").route('descrizione_articolo', invoiceData,20) 
 	})
@@ -296,11 +288,11 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  
 	  
 	
-	    // QPX REST API URL (I censored my api key)
+	    // INIZIO A CREARE LA FATTURA
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"
 		var resoconto = {};
 		
-	    // fire request
+	    // MANDO RICHIESTA FATTURA
 	    request({
 	    url: url,
 	    method: "POST",
@@ -317,35 +309,34 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	            return
 	        }
 	        var doc_id = body.new_id;
-	        msg.say(doc_id);
-	         callback(doc_id);
-	        return doc_id;
+	        callback(doc_id);
 	    })
 	    
-	    resoconto["email"] = invoiceData["indirizzo_via"];
-	    msg.say(doc_id);
-	    msg.say(doc_id);
-	    msg.say(resoconto["email"]);
 	    
-		msg
-		.say({
-		text: '',
-		attachments: [
-		  {
-		    text: 'Fattura creata! Vuoi mandarla via email?',
-		    fallback: 'Fattura creata! Vuoi mandarla via email?',
-		    callback_id: 'doit_confirm_callback',
-		    actions: [
-		      { name: 'answer', text: 'Yes', type: 'button', value: 'yes' },
-		      { name: 'answer', text: 'No', type: 'button', value: 'no' }
-		    ]
-		  }]
-		})
-	    
-	  .route('invia_fattura_email', resoconto, 20)
+	    function callback(doc_id) {
+		    resoconto["email"] = invoiceData["indirizzo_via"];
+		    resoconto["id"] = doc_id;
+		    
+			msg
+			.say({
+			text: '',
+			attachments: [
+			  {
+			    text: 'Fattura creata! Vuoi mandarla via email?',
+			    fallback: 'Fattura creata! Vuoi mandarla via email?',
+			    callback_id: 'doit_confirm_callback',
+			    actions: [
+			      { name: 'answer', text: 'Yes', type: 'button', value: 'yes' },
+			      { name: 'answer', text: 'No', type: 'button', value: 'no' }
+			    ]
+			  }]
+			})
+		    
+		  .route('invia_fattura_email', resoconto, 20)
+		}
 	})
 	
-	//Invia email
+	//Invia email della fattura
 	slapp.route('invia_fattura_email', (msg,resoconto) => {
 	  let answer = msg.body.actions[0].value
 	  if (answer !== 'yes') {
@@ -362,7 +353,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  var dataEmail = {}
 	  dataEmail["api_uid"] = "12078";
 	  dataEmail["api_key"] = "841b369a3268661b0ca1e768337232b6";
-	  dataEmail["id"] = doc_id;
 	  dataEmail["mail_mittente"] = "crew@fromowl.com";
 	  dataEmail["mail_destinatario"] = resoconto["email"];
 	  dataEmail["includi_documento"] = true;

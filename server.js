@@ -154,6 +154,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	})
 	
 	slapp.route('articolo', (msg,invoiceData) => {
+	  console.log(msg.body.event);
+	  console.log(msg.body.event.text);
 	  var response = (msg.body.event && msg.body.event.text) || ''
 	  console.log(response);
 	  invoiceData["indirizzo_via"] = response;

@@ -1,3 +1,5 @@
+//added airtable, in table.js added async module
+
 'use strict'
 
 const express = require('express')
@@ -7,7 +9,12 @@ const Context = require('slapp-context-beepboop')
 
 ////ALBIADD
 const request = require("request")
-const base = require('./airtable/lib/airtable.js').base('keyzbVDpl49AwQZJX');
+var Airtable = require('./airtable/lib/airtable.js');
+Airtable.configure({
+    endpointUrl: 'https://api.airtable.com',
+    apiKey: 'keyzbVDpl49AwQZJX'
+});
+var base = Airtable.base('appQrH3hphwlYu2F4');
 
 //END ALBIADD
 

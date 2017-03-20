@@ -219,6 +219,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 		//costruisco il messaggio
 		var message = {}
+		var products = {}
 		message["text"] = "Ciao";
 		message["attachments"] = [{}];
 		message["attachments"][0]["text"] = "Quale prodotto?";

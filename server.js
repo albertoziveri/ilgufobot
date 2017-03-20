@@ -212,18 +212,18 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		
 		//costruisco il messaggio
 		var msg = {}
-		msg[text] = ""
-		msg[attachments] = [{}]
-		msg[attachments][text] = "Quale prodotto?" 
-		msg[attachments][fallback] = "Quale prodotto?" 
-		msg[attachments][callback_id] = "doit_confirm_callback" 
-		msg[attachments][actions] = [{}]
+		msg["text"] = ""
+		msg["attachments"] = [{}]
+		msg["attachments"]["text"] = "Quale prodotto?" 
+		msg["attachments"]["fallback"] = "Quale prodotto?" 
+		msg["attachments"]["callback_id"] = "doit_confirm_callback" 
+		msg["attachments"]["actions"] = [{}]
 		
 		prodotti.forEach(function myFunction(item, index) {
-			msg[attachments][actions][index][name] = "answer";
-			msg[attachments][actions][index][text] = item;
-			msg[attachments][actions][index][type] = "button";
-			msg[attachments][actions][index][value] = item;
+			msg["attachments"]["actions"][index]["name"] = "answer";
+			msg["attachments"]["actions"][index]["text"] = item;
+			msg["attachments"]["actions"][index]["type"] = "button";
+			msg["attachments"]["actions"][index]["value"] = item;
 		});
 		
 		

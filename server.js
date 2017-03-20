@@ -228,9 +228,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	        message["attachments"][0]["actions"].push(prodotto);
 		});
 		
+		var myJSON = JSON.stringify(message);
 		
 		//ora chiedo quale prodotto vuole
-		msg.say(message)
+		msg.say(myJSON)
 		.route('dettagli_articolo', invoiceData,20)
 	  
 	})

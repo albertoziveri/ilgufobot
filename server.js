@@ -188,38 +188,40 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?") 
 	  
 	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE 
-	  var prodotti = [];
-	  var lista_prodotti = function() {
-		  base('tabella1').select({
-			    // Selecting the first 3 records in Main View:
-			    maxRecords: 3,
-			    view: "Main View"
-			}).eachPage(function page(records, fetchNextPage) {
-			    // This function (`page`) will get called for each page of records.
-				
-			    records.forEach(function(record) {
-			       prodotti.push(record.get('Name'));
-			    });
+	  base('tabella1').select({
+		    // Selecting the first 3 records in Main View:
+		    maxRecords: 3,
+		    view: "Main View"
+		}).eachPage(function page(records, fetchNextPage) {
+		    // This function (`page`) will get called for each page of records.
+			var prodotti = [];
 			
-			    // To fetch the next page of records, call `fetchNextPage`.
-			    // If there are more records, `page` will get called again.
-			    // If there are no more records, `done` will get called.
-			    fetchNextPage();
-			    console.log(prodotti);
-			
-			}, function done(err) {
-			    if (err) { console.error(err); return; }
-			    
-			});	
-			
-			console.log(prodotti);
-			console.log(prodotti);
-		}();
+		    records.forEach(function(record) {
+		       prodotti.push(record.get('Name'));
+		       console.log(prodotti);
+		    });
 		
+		    // To fetch the next page of records, call `fetchNextPage`.
+		    // If there are more records, `page` will get called again.
+		    // If there are no more records, `done` will get called.
+		    fetchNextPage();
+		    
+		
+		}, function done(err) {
+		    if (err) { console.error(err); return; }
+		    console.log(prodotti);
+		    
+		});	
+		
+		var products =[];
+		//callback imposto variabile globale
+		function showProdotti(prodotti) {
+		 products.push(prodotti);
+		 console.log(products);
+		}
 
 		//costruisco il messaggio
 		var message = {}
-		var products = {}
 		message["text"] = "Ciao";
 		message["attachments"] = [{}];
 		message["attachments"][0]["text"] = "Quale prodotto?";

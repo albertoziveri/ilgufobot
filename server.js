@@ -400,36 +400,3 @@ server.listen(port, (err) => {
 
   console.log(`Listening on port ${port}`)
 })
-
-
-
-
-
-
-//ATTACHMENTS FATTURA
-{
-    "attachments": [
-        {
-            "fallback": "Required plain-text summary of the attachment.",
-            "color": "#36a64f",
-            "pretext": "Ecco un resoconto della tua fattura, clicca sul link grigio per vedere il PDF.",
-            "author_name": "Fattura ad Alberto Ziveri, email email",
-            "author_link": "http://www.fattureincloud.com",
-            "title": "Totale 100 €",
-            "text": "Altre info",
-            "fields": [
-                {
-                    "title": "Prodotto 1",
-                    "value": "10 unità a 10 euro ciascuna",
-                    "short": true
-                },
-				{
-                    "title": "Prodotto 2, 10 euro, 10 unità",
-                    "value": "10 unità a 10 euro ciascuna",
-                    "short": true
-                }
-            ],
-            "ts": 123456789
-        }
-    ]
-}

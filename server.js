@@ -188,13 +188,13 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?") 
 	  
 	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE 
+	  var prodotti = [];
 	  base('tabella1').select({
 		    // Selecting the first 3 records in Main View:
 		    maxRecords: 3,
 		    view: "Main View"
 		}).eachPage(function page(records, fetchNextPage) {
 		    // This function (`page`) will get called for each page of records.
-			var prodotti = [];
 			
 		    records.forEach(function(record) {
 		       prodotti.push(record.get('Name'));

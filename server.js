@@ -206,9 +206,9 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    // If there are no more records, `done` will get called.
 		    fetchNextPage();
 		
-		}, function done(err,response) {
+		}, function done(err,records) {
 		    if (err) { console.error(err); return; }
-		    console.log(response);
+		    console.log(records);
 		});	
 		
 		//costruisco il messaggio

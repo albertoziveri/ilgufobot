@@ -14,7 +14,7 @@ Airtable.configure({
     endpointUrl: 'https://api.airtable.com',
     apiKey: 'keyzbVDpl49AwQZJX'
 });
-var base = Airtable.base('appQrH3hphwlYu2F4');
+var base = Airtable.base('app41vRUJdU03aa4q');
 
 //END ALBIADD
 
@@ -150,7 +150,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  //Imposto la ragione sociale che mi ha detto
 	  invoiceData["nome"] = response;
 	  
-	  msg.say("Bene che abbiamo venduto qualcosa a "+response+", ma dimmi, che indirizzo email ha?").route('articolo', invoiceData,20) 
+	  msg.say("Bene che abbiamo venduto qualcosa a "+response+", ma dimmi, che indirizzo email ha?").route('articolo', invoiceData,40) 
 	})
 	
 	slapp.route('articolo', (msg,invoiceData) => {
@@ -159,19 +159,75 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  console.log(realEmail);
 	  invoiceData["indirizzo_via"] = realEmail.join('\n');
 	  
-	  msg.say("L'email del cliente è "+response+", quale prodotto hai venduto?") 
+	  msg.say("L'email del cliente è "+response+", quale collezione hai venduto del primo prodotto?") 
 	  
-	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE 
-	  var prodotti = [];
-	  base('tabella1').select({
-		    // Selecting the first 3 records in Main View:
-		    maxRecords: 3,
+	  //ORA FACCIO SELEZIONARE LA COLLEZIONE DA AIRTABLE 
+	  var collezioni = [];
+	  base('Collezioni').select({
+		    maxRecords: 5,
 		    view: "Main View"
 		}).eachPage(function page(records, fetchNextPage) {
 		    // This function (`page`) will get called for each page of records.
 			
 		    records.forEach(function(record) {
-		       prodotti.push(record.get('Name'));
+		       collezioni.push(record.get('Nome collezione'));
+		    });
+		
+		    // To fetch the next page of records, call `fetchNextPage`.
+		    // If there are more records, `page` will get called again.
+		    // If there are no more records, `done` will get called.
+		    fetchNextPage();
+		    
+		    show_results(collezioni);
+		
+		}, function done(err) {
+		    if (err) { console.error(err); return; }
+		});	
+		
+
+		function show_results(collezioni) {
+			//Costruisco il messaggio
+			var message = {}
+			message["text"] = "";
+			message["attachments"] = [{}];
+			message["attachments"][0]["text"] = "Quale collezione?";
+			message["attachments"][0]["fallback"] = "Quale collezione?"; 
+			message["attachments"][0]["callback_id"] = "doit_confirm_callback"; 
+	        message["attachments"][0]["actions"] = [];
+	
+			
+			collezioni.forEach(function myFunction(item, index) {
+				//vedi esempio: https://www.w3schools.com/code/tryit.asp?filename=FDTRK0J1WRFL
+				var prodotto = {};
+		        prodotto["name"] ="answer";
+		        prodotto["text"] =item;
+		        prodotto["type"] ="button";
+		         prodotto["value"] =item;
+		        message["attachments"][0]["actions"].push(prodotto);
+			});
+						
+			//descrizione articolo
+			msg.say(message)
+			.route('scelta_prodotto', invoiceData,20)
+		}
+	  
+	})
+	
+	
+	slapp.route('scelta_prodotto', (msg,invoiceData) => {
+	  let answer = msg.body.actions[0].value
+
+	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE 
+	  var prodotti = [];
+	  base('Prodotti').select({
+		    maxRecords: 5,
+		    view: "Main View",
+		    {Collezione} = answer
+		}).eachPage(function page(records, fetchNextPage) {
+		    // This function (`page`) will get called for each page of records.
+			
+		    records.forEach(function(record) {
+		       prodotti.push(record.get('Nome Prodotto'));
 		    });
 		
 		    // To fetch the next page of records, call `fetchNextPage`.
@@ -181,15 +237,13 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    
 		    show_results(prodotti);
 		
-		}, function done(err,prodotti) {
+		}, function done(err) {
 		    if (err) { console.error(err); return; }
 		});	
 		
 
 		function show_results(prodotti) {
-			 // We want this to show the "results" from the callback function.
-			
-			//costruisco il messaggio
+			//Costruisco il messaggio
 			var message = {}
 			message["text"] = "";
 			message["attachments"] = [{}];
@@ -211,14 +265,14 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 						
 			//descrizione articolo
 			msg.say(message)
-			.route('dettagli_articolo', invoiceData,20)
+			.route('scelta_prodotto', invoiceData,20)
 		}
-	  
+		
 	})
+
 	
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
 	  let answer = msg.body.actions[0].value
-
 	  invoiceData["lista_articoli"][0]["nome"] = answer;
 	  msg.say("Dimmi la taglia dell'articolo o altre informazioni nella descrizione!").route('descrizione_articolo', invoiceData,20) 
 	})

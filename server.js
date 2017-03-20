@@ -265,7 +265,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 						
 			//descrizione articolo
 			msg.say(message)
-			.route('scelta_prodotto', invoiceData,20)
+			.route('dettagli_articolo', invoiceData,20)
 		}
 		
 	})

@@ -211,24 +211,24 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		});	
 		
 		//costruisco il messaggio
-		var msg = {}
-		msg["text"] = ""
-		msg["attachments"] = [{}]
-		msg["attachments"]["text"] = "Quale prodotto?" 
-		msg["attachments"]["fallback"] = "Quale prodotto?" 
-		msg["attachments"]["callback_id"] = "doit_confirm_callback" 
-		msg["attachments"]["actions"] = [{}]
+		var message = {}
+		message["text"] = ""
+		message["attachments"] = [{}]
+		message["attachments"]["text"] = "Quale prodotto?" 
+		message["attachments"]["fallback"] = "Quale prodotto?" 
+		message["attachments"]["callback_id"] = "doit_confirm_callback" 
+		message["attachments"]["actions"] = [{}]
 		
 		prodotti.forEach(function myFunction(item, index) {
-			msg["attachments"]["actions"][index]["name"] = "answer";
-			msg["attachments"]["actions"][index]["text"] = item;
-			msg["attachments"]["actions"][index]["type"] = "button";
-			msg["attachments"]["actions"][index]["value"] = item;
+			message["attachments"]["actions"][index]["name"] = "answer";
+			message["attachments"]["actions"][index]["text"] = item;
+			message["attachments"]["actions"][index]["type"] = "button";
+			message["attachments"]["actions"][index]["value"] = item;
 		});
 		
 		
 		//ora chiedo quale prodotto vuole
-		msg.say(msg)
+		msg.say(message)
 		.route('dettagli_articolo', invoiceData,20)
 	  
 	})

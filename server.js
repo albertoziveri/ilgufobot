@@ -130,10 +130,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  // respond with an interactive message with buttons Yes and No
 	  var invoiceData = {};
 	  msg
-	  .say("Certo!")
-	  // handle the response with this route passing state
-	  // and expiring the conversation after 20 seconds
-	  .route('company', invoiceData, 20)
+	  .say("Certo!").route('company', invoiceData, 20)
 	})
 	
 	//ragione sociale
@@ -269,14 +266,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		var resoconto = {};
 		
 	    // MANDO RICHIESTA FATTURA
-	    request({
-	    url: url,
-	    method: "POST",
-	    json: invoiceData
-	}, function (error, response, body) {
-	        if (!error && response.statusCode === 200) {
-	            console.log(body)
-	        }
+	    request({url: url,method: "POST",json: invoiceData}, function (error, response, body) {
+	        if (!error && response.statusCode === 200) { console.log(body) }
 	        else {
 				msg.say("Fattura non inserita, procedere manualmente.")
 	            console.log("error: " + error)
@@ -284,9 +275,37 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	            console.log("response.statusText: " + response.statusText)
 	            return
 	        }
+	        
+	        //Fattura inserita
 	        var doc_id = body.new_id;
 	        console.log(doc_id);
-	        callback(doc_id);
+	        
+	        //Prendo i dettagli del nuovo documento
+	        get_invoice_details(doc_id);
+		        function get_invoice_details(doc_id) {
+			        
+			        invoicedatafinal = {"api_uid": "12078","api_key": "841b369a3268661b0ca1e768337232b6","id": doc_id,"token": "1234567890abcdefghijklmnopqrstuv"}
+					request({url: "https://api.fattureincloud.it:443/v1/fatture/dettagli",method: "POST",json: invoiceData}, function (error, response, body) {
+				        if (!error && response.statusCode === 200) { console.log(body) }
+				        else {
+							msg.say("Fattura non inserita, procedere manualmente.")
+				            console.log("error: " + error)
+				            console.log("response.statusCode: " + response.statusCode)
+				            console.log("response.statusText: " + response.statusText)
+				            return
+				        }
+				        
+				        //dettagli fattura
+				        var callback =[];
+				         callback["link_doc"] = body.dettagli_documento.link_doc;
+				         callback["id"] = doc_id;
+				        console.log(callback["link_doc"]);
+				        
+				        //Callback procedo
+				        callback(callback);
+				    })		        
+				}
+				
 	    })
 	    
 	    
@@ -299,8 +318,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 			            "fallback": "Required plain-text summary of the attachment.",
 			            "color": "#36a64f",
 			            "pretext": "Ecco un resoconto della tua fattura, clicca sul link grigio per vedere il PDF.",
-			            "author_name": "Fattura a"+invoiceData["name"],
-			            "author_link": "http://www.fattureincloud.com",
+			            "author_name": "Fattura a"+invoiceData["nome"],
+			            "author_link": resoconto["link_doc"],
 			            "title": "Totale 100 €",
 			            "text": "Altre info",
 			            "fields": [
@@ -321,10 +340,11 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 			}
 		)
 	    
-	    function callback(doc_id) {
+	    function callback(callback) {
 		    resoconto["email"] = invoiceData["indirizzo_via"];
-		    resoconto["id"] = doc_id;
+		    resoconto["id"] = callback["id"];
 		    resoconto["nome"] = invoiceData["nome"];
+		    resoconto["link_doc"] = callback["link_doc"];
 		    
 			msg
 			.say({

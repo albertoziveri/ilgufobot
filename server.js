@@ -398,7 +398,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  dataEmail["includi_allegato"] = true;
 	  dataEmail["allega_pdf"] = true;	
 	  dataEmail["oggetto"] = "Our invoice for you";
-	  dataEmail["messaggio"] = "Hello "+resoconto["nome"]+", here's our invoice our your last purchase.<br /> {{allegati}} <br />Best regards, Divisible Odd srls";
+	  dataEmail["messaggio"] = "Hello "+resoconto["nome"]+", here's our invoice our your last purchase.<br /> {{allegati}} <br />Best regards, Divisible Odd srls"; 
 		  
 	    // QPX REST API URL (I censored my api key)
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/inviamail"

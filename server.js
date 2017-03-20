@@ -315,7 +315,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    var object = invoiceData["lista_articoli"];
 			Object.keys(object).forEach(function(key) {
 				var prodotto_venduto = {};
-			    console.log(key, obj[key]);
 			    prodotto_venduto["title"] =object["nome"];
 			    prodotto_venduto["value"] =object["descrizione"];
 			    prodotto_venduto["short"] =true;

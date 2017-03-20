@@ -156,7 +156,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	slapp.route('articolo', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
 	  var realEmail = response.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/ig);
-	  alert(result.join('\n'));
 	  console.log(realEmail);
 	  invoiceData["indirizzo_via"] = realEmail.join('\n');
 	  

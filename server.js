@@ -228,13 +228,23 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		
 		
 		//ora chiedo quale prodotto vuole
-		msg.say(msg).route('dettagli_articolo', invoiceData,20)
+		msg.say(msg)
+		.route('dettagli_articolo', invoiceData,20)
 	  
 	})
 	
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
-	  var response = (msg.body.event && msg.body.event.text) || ''
-	  invoiceData["lista_articoli"][0]["nome"] = response;
+	  let answer = msg.body.actions[0].value
+	  if (answer !== 'yes') {
+	    // the answer was not affirmative
+	    msg.respond(msg.body.response_url, {
+	      text: `OK, not doing it. Whew that was close :cold_sweat:`,
+	      delete_original: true
+	    })
+	    // notice we did NOT specify a route because the conversation is over
+	    return
+	  }
+	  invoiceData["lista_articoli"][0]["nome"] = answer;
 	  msg.say("Dimmi la taglia dell'articolo o altre informazioni nella descrizione!").route('descrizione_articolo', invoiceData,20) 
 	})
 	

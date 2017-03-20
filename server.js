@@ -7,6 +7,16 @@ const Context = require('slapp-context-beepboop')
 
 ////ALBIADD
 const request = require("request")
+const base = require('airtable').base('appQrH3hphwlYu2F4');
+
+//ALBIADD AIRTABLE
+const Airtable = require('airtable');
+Airtable.configure({
+    endpointUrl: 'https://api.airtable.com',
+    apiKey: 'keyzbVDpl49AwQZJX'
+});
+var base = Airtable.base('appQrH3hphwlYu2F4');
+//END ALBIADD
 
 
 // use `PORT` env var on Beep Boop - default to 3000 locally
@@ -175,7 +185,54 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  
 	  invoiceData["indirizzo_via"] = response;
 	  
-	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?").route('dettagli_articolo', invoiceData,20) 
+	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?") 
+	  
+	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE
+	  	var prodotti =[] 
+	  	
+		base('tabella1').select({
+		    // Selecting the first 3 records in Main View:
+		    maxRecords: 3,
+		    view: "Main View"
+		}).eachPage(function page(records, fetchNextPage) {
+		    // This function (`page`) will get called for each page of records.
+		
+		    records.forEach(function(record) {
+		       prodotti.push(record.get('Name'));
+		    });
+		
+		    // To fetch the next page of records, call `fetchNextPage`.
+		    // If there are more records, `page` will get called again.
+		    // If there are no more records, `done` will get called.
+		    fetchNextPage();
+		
+		}, function done(err) {
+		    if (err) { console.error(err); return; }
+		});	
+		
+		//costruisco il messaggio
+		var msg = {}
+		msg[text] = ""
+		msg[attachments] = [{}]
+		msg[attachments][text] = "Quale prodotto?" 
+		msg[attachments][fallback] = "Quale prodotto?" 
+		msg[attachments][callback_id] = "doit_confirm_callback" 
+		msg[attachments][actions] = [{}]
+		
+		prodotti.forEach(function myFunction(item, index) {
+			msg[attachments][actions][index][name] = "answer";
+			msg[attachments][actions][index][text] = item;
+			msg[attachments][actions][index][type] = "button";
+			msg[attachments][actions][index][value] = item;
+		});
+		
+		
+		//ora chiedo quale prodotto vuole
+		msg.say(msg);
+	  // handle the response with this route passing state
+	  // and expiring the conversation after 20 seconds
+	  .route('dettagli_articolo', invoiceData,20)
+	  
 	})
 	
 	slapp.route('dettagli_articolo', (msg,invoiceData) => {
@@ -221,10 +278,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"
 		var resoconto = {};
 		
-		var EventEmitter = require("events").EventEmitter;
-		var data = new EventEmitter();
-
-		
 	    // fire request
 	    request({
 	    url: url,
@@ -241,17 +294,13 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	            console.log("response.statusText: " + response.statusText)
 	            return
 	        }
-	        
-	        //aggiorno ID ottenuto
-	        data = body;
-		    data.emit('update');
+	        var doc_id = body.new_id;
+	        msg.say(doc_id);
+	         callback(doc_id);
+	        return doc_id;
 	    })
 	    
 	    resoconto["email"] = invoiceData["indirizzo_via"];
-	    var doc_id ="";
-		data.on('update', function () {
-		    doc_id = data.new_id;
-		});
 	    msg.say(doc_id);
 	    msg.say(doc_id);
 	    msg.say(resoconto["email"]);
@@ -361,3 +410,36 @@ server.listen(port, (err) => {
 
   console.log(`Listening on port ${port}`)
 })
+
+
+
+
+
+
+//ATTACHMENTS FATTURA
+{
+    "attachments": [
+        {
+            "fallback": "Required plain-text summary of the attachment.",
+            "color": "#36a64f",
+            "pretext": "Ecco un resoconto della tua fattura, clicca sul link grigio per vedere il PDF.",
+            "author_name": "Fattura ad Alberto Ziveri, email email",
+            "author_link": "http://www.fattureincloud.com",
+            "title": "Totale 100 €",
+            "text": "Altre info",
+            "fields": [
+                {
+                    "title": "Prodotto 1",
+                    "value": "10 unità a 10 euro ciascuna",
+                    "short": true
+                },
+				{
+                    "title": "Prodotto 2, 10 euro, 10 unità",
+                    "value": "10 unità a 10 euro ciascuna",
+                    "short": true
+                }
+            ],
+            "ts": 123456789
+        }
+    ]
+}

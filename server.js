@@ -205,12 +205,18 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    // If there are more records, `page` will get called again.
 		    // If there are no more records, `done` will get called.
 		    fetchNextPage();
+		    
+		    showProdotti(prodotti);
 		
-		}, function done(err,records) {
+		}, function done(err) {
 		    if (err) { console.error(err); return; }
-		    console.log(records);
+		    
 		});	
 		
+		function showProdotti(prodotti) {
+		 // We want this to show the "results" from the callback function.
+		 console.log(prodotti);
+		}
 		//costruisco il messaggio
 		var message = {}
 		message["text"] = "Ciao";

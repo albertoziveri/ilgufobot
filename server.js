@@ -221,10 +221,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		
 		
 		//ora chiedo quale prodotto vuole
-		msg.say(msg);
-	  // handle the response with this route passing state
-	  // and expiring the conversation after 20 seconds
-	  .route('dettagli_articolo', invoiceData,20)
+		msg.say(msg).route('dettagli_articolo', invoiceData,20)
 	  
 	})
 	

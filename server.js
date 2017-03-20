@@ -309,7 +309,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	            return
 	        }
 	        var doc_id = body.new_id;
-	        console_log(doc_id);
+	        console.log(doc_id);
 	        callback(doc_id);
 	    })
 	    

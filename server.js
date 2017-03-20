@@ -188,7 +188,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?") 
 	  
 	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE 
-		base('tabella1').select({
+	  var prodotti = base('tabella1').select({
 		    // Selecting the first 3 records in Main View:
 		    maxRecords: 3,
 		    view: "Main View"
@@ -205,20 +205,15 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    // If there are no more records, `done` will get called.
 		    fetchNextPage();
 		    
-		    showProdotti(prodotti);
+		    return prodotti;
 		
 		}, function done(err) {
 		    if (err) { console.error(err); return; }
 		    
 		});	
 		
-		var products =[];
-		//callback imposto variabile globale
-		function showProdotti(prodotti) {
-		 return prodotti
-		}
-		products = showProdotti(prodotti)
-		console.log(products);
+		console.log(prodotti);
+	
 
 		//costruisco il messaggio
 		var message = {}

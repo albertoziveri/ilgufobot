@@ -194,7 +194,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    view: "Main View"
 		}).eachPage(function page(records, fetchNextPage) {
 		    // This function (`page`) will get called for each page of records.
-		
+			var prodotti = [];
+			
 		    records.forEach(function(record) {
 		       prodotti.push(record.get('Name'));
 		    });

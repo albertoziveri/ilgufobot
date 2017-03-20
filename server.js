@@ -202,7 +202,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 			
 			prodotti.forEach(function myFunction(item, index) {
-				
+				//vedi esempio: https://www.w3schools.com/code/tryit.asp?filename=FDTRK0J1WRFL
 				var prodotto = {};
 		        prodotto["name"] ="answer";
 		        prodotto["text"] =item;
@@ -210,11 +210,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		         prodotto["value"] =item;
 		        message["attachments"][0]["actions"].push(prodotto);
 			});
-			
-			var myJSON = JSON.stringify(message);
-			
-			//ora chiedo quale prodotto vuole
-			msg.say(myJSON);
+						
+			//descrizione articolo
 			msg.say(message)
 			.route('dettagli_articolo', invoiceData,20)
 		}
@@ -238,29 +235,28 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
 	  var units = parseFloat(response);
 	  invoiceData["lista_articoli"][0]["quantita"] = units;
-	  msg.say("Ora dimmi il prezzo per unità! Inclusivo di IVA").route('prezzo_prodotto', invoiceData,20) 
+	  msg.say("Ora dimmi il prezzo per unità! Inclusivo di IVA").route('end_of_invoice', invoiceData,20) 
 	})
 	
-	slapp.route('prezzo_prodotto', (msg,invoiceData) => {
+	slapp.route('end_of_invoice', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
 	  response = response.replace(/,/g, '.');
 	  var price = parseFloat(response);
 	  invoiceData["lista_articoli"][0]["prezzo_lordo"] = price;
 	  invoiceData["lista_articoli"][0]["cod_iva"] = 0;
-	  msg.say("Perfetto! Quindi hai venduto "+invoiceData["lista_articoli"][0]["nome"]+" unità di "+invoiceData["lista_articoli"][0]["quantita"]+" al prezzo di "+invoiceData["lista_articoli"][0]["prezzo_lordo"]+" "+invoiceData["valuta"])
 	
-	//pagamenti  
-	var MyDate = new Date();
-	var MyDateString;
-	MyDate.setDate(MyDate.getDate());
-	MyDateString = ('0' + MyDate.getDate()).slice(-2) + '/' + ('0' + (MyDate.getMonth()+1)).slice(-2) + '/' + MyDate.getFullYear();  
-	invoiceData["lista_pagamenti"][0]["data_scadenza"] = MyDateString;
-	invoiceData["lista_pagamenti"][0]["importo"] = price;
-	invoiceData["lista_pagamenti"][0]["metodo"] = "cassa";
-	invoiceData["lista_pagamenti"][0]["data_saldo"] = MyDateString;
-	  
-	  
-	
+		//pagamenti  
+		var MyDate = new Date();
+		var MyDateString;
+		MyDate.setDate(MyDate.getDate());
+		MyDateString = ('0' + MyDate.getDate()).slice(-2) + '/' + ('0' + (MyDate.getMonth()+1)).slice(-2) + '/' + MyDate.getFullYear();  
+		invoiceData["lista_pagamenti"][0]["data_scadenza"] = MyDateString;
+		invoiceData["lista_pagamenti"][0]["importo"] = price;
+		invoiceData["lista_pagamenti"][0]["metodo"] = "cassa";
+		invoiceData["lista_pagamenti"][0]["data_saldo"] = MyDateString;
+		
+		
+		
 	    // INIZIO A CREARE LA FATTURA
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/nuovo"
 		var resoconto = {};
@@ -286,7 +282,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    })
 	    
         function get_invoice_details(doc_id) {
-	        
 	        var invoicedatafinal = {"api_uid": "12078","api_key": "841b369a3268661b0ca1e768337232b6","id": doc_id,"token": "1234567890abcdefghijklmnopqrstuv"}
 			request({url: "https://api.fattureincloud.it:443/v1/fatture/dettagli",method: "POST",json: invoicedatafinal}, function (error, response, body) {
 		        if (!error && response.statusCode === 200) { console.log(body) }
@@ -310,42 +305,47 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		}
 	    
 	    
-		msg
-		.say(
-			{
-				text: ':confetti_ball: ',
-			    "attachments": [
-			        {
-			            "fallback": "Required plain-text summary of the attachment.",
-			            "color": "#36a64f",
-			            "pretext": "Ecco un resoconto della tua fattura, clicca sul link grigio per vedere il PDF.",
-			            "author_name": "Fattura a"+invoiceData["nome"],
-			            "author_link": resoconto["link_doc"],
-			            "title": "Totale 100 €",
-			            "text": "Altre info",
-			            "fields": [
-			                {
-			                    "title": "Prodotto 1",
-			                    "value": "10 unità a 10 euro ciascuna",
-			                    "short": true
-			                },
-							{
-			                    "title": "Prodotto 2, 10 euro, 10 unità",
-			                    "value": "10 unità a 10 euro ciascuna",
-			                    "short": true
-			                }
-			            ],
-			            "ts": 123456789
-			        }
-			    ]
-			}
-		)
 	    
 	    function wantEmail(callback) {
 		    resoconto["email"] = invoiceData["indirizzo_via"];
 		    resoconto["id"] = callback["id"];
 		    resoconto["nome"] = invoiceData["nome"];
 		    resoconto["link_doc"] = callback["link_doc"];
+		    resoconto["link_doc"] = invoiceData["nome"];
+		    
+		    //Creo resoconto per ogni prodotto
+		    resoconto["prodotti_venduti"] = [];
+			Object.keys(invoiceData["lista_articoli"]).forEach(function(key) {
+				var prodotto_venduto {};
+			    console.log(key, obj[key]);
+			    prodotto_venduto["name"] =obj["nome"];
+			    prodotto_venduto["descrizione"] =obj["descrizione"];
+			    prodotto_venduto["quantita"] =obj["quantita"];
+			    prodotto_venduto["prezzo"] =obj["prezzo_lordo"];
+			    console.log(prodotto_venduto);
+			    
+			    resoconto["prodotti_venduti"].push(prodotto_venduto);
+			});		    
+		    
+			msg
+			.say(
+				{
+					text: ':confetti_ball: ',
+				    "attachments": [
+				        {
+				            "fallback": "Required plain-text summary of the attachment.",
+				            "color": "#36a64f",
+				            "pretext": "Ecco un resoconto della tua fattura, clicca sul link grigio per vedere il PDF.",
+				            "author_name": "Fattura a"+invoiceData["nome"],
+				            "author_link": resoconto["link_doc"],
+				            "title": invoiceData["lista_articoli"][0]["prezzo_lordo"], //aggiornare con totale
+				            "text": "Altre info",
+				            "fields": [resoconto["prodotti_venduti"]],
+				            "ts": 123456789
+				        }
+				    ]
+				}
+			)
 		    
 			msg
 			.say({

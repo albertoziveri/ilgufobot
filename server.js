@@ -324,7 +324,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 			Object.keys(objectProducts).forEach(function() {
 				var prodotto_venduto = {};
 			    prodotto_venduto["title"] =objectProducts[0]["nome"];
-			    prodotto_venduto["value"] =objectProducts[0]["descrizione"];
+			    prodotto_venduto["value"] = objectProducts[0]["descrizione"]+", "+objectProducts[0]["prezzo_lordo"]+" ciascuno";
 			    prodotto_venduto["short"] =true;
 			    console.log(prodotto_venduto);
 			    resoconto["prodotti_venduti"].push(prodotto_venduto);
@@ -341,10 +341,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 				            "fallback": "Required plain-text summary of the attachment.",
 				            "color": "#36a64f",
 				            "pretext": "Ecco un resoconto della tua fattura, clicca sul link grigio per vedere il PDF.",
-				            "author_name": "Fattura a"+invoiceData["nome"],
+				            "author_name": "Fattura a "+invoiceData["nome"],
 				            "author_link": resoconto["link_doc"],
-				            "title": "Totale "+invoiceData["lista_articoli"][0]["prezzo_lordo"]+invoiceData["lista_articoli"][0]["valuta"], //aggiornare con totale
-				            "text": "Altre info",
+				            "title": "Totale "+total_price+invoiceData["valuta"], //aggiornare con totale
+				            "text": "Prodotti venduti:",
 				            "fields": resoconto["prodotti_venduti"],
 				            "ts": 123456789
 				        }
@@ -401,11 +401,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  dataEmail["messaggio"] = "Hello "+resoconto["name"]+", here's our invoice our your last purchase.<br /> {{allegati}} <br />Best regards, Divisible Odd srls";
 		  
 	    // QPX REST API URL (I censored my api key)
-	    var url = "https://api.fattureincloud.it:443/v1/fatture/inviamail"
-		
-		var myJSON = JSON.stringify(dataEmail);
-		msg.say(myJSON);
-		
+	    var url = "https://api.fattureincloud.it:443/v1/fatture/inviamail/"
 		
 	    // fire request
 	    request({

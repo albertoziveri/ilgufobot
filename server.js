@@ -284,8 +284,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	        get_invoice_details(doc_id);
 		        function get_invoice_details(doc_id) {
 			        
-			        invoicedatafinal = {"api_uid": "12078","api_key": "841b369a3268661b0ca1e768337232b6","id": doc_id,"token": "1234567890abcdefghijklmnopqrstuv"}
-					request({url: "https://api.fattureincloud.it:443/v1/fatture/dettagli",method: "POST",json: invoiceData}, function (error, response, body) {
+			        var invoicedatafinal = {"api_uid": "12078","api_key": "841b369a3268661b0ca1e768337232b6","id": doc_id,"token": "1234567890abcdefghijklmnopqrstuv"}
+					request({url: "https://api.fattureincloud.it:443/v1/fatture/dettagli",method: "POST",json: invoicedatafinal}, function (error, response, body) {
 				        if (!error && response.statusCode === 200) { console.log(body) }
 				        else {
 							msg.say("Fattura non inserita, procedere manualmente.")

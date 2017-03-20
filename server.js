@@ -199,7 +199,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		
 		    records.forEach(function(record) {
 		       prodotti.push(record.get('Name'));
-		       console.log(record.get('Name'));
 		    });
 		
 		    // To fetch the next page of records, call `fetchNextPage`.
@@ -207,8 +206,9 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    // If there are no more records, `done` will get called.
 		    fetchNextPage();
 		
-		}, function done(err) {
+		}, function done(err,response) {
 		    if (err) { console.error(err); return; }
+		    console.log(response);
 		});	
 		
 		//costruisco il messaggio

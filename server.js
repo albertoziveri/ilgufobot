@@ -222,7 +222,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  base('Prodotti').select({
 		    maxRecords: 5,
 		    view: "Main View",
-		    filterByFormula: '{Collezione} ='+answer
+		    filterByFormula: '{Collezione} =\''+answer+'\''
 		}).eachPage(function page(records, fetchNextPage) {
 		    // This function (`page`) will get called for each page of records.
 			

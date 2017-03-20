@@ -130,11 +130,14 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  // respond with an interactive message with buttons Yes and No
 	  var invoiceData = {};
 	  msg
-	  .say("Certo!").route('company', invoiceData, 20)
+	  .say("Certo! Dimmi pure la tua ragione sociale!").route('indirizzo', invoiceData, 20)
 	})
 	
-	//ragione sociale
-	slapp.route('company', (msg,invoiceData) => {
+	
+	slapp.route('indirizzo', (msg,invoiceData) => {
+	  var response = (msg.body.event && msg.body.event.text) || ''
+	  
+	  //Imposto i dati iniziali
 	  invoiceData["api_uid"] = "12078";
 	  invoiceData["api_key"] = "841b369a3268661b0ca1e768337232b6";
 	  invoiceData["id_template"] = "2201";
@@ -144,13 +147,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  invoiceData["lista_articoli"] = [{}];
 	  invoiceData["lista_pagamenti"] = [{}];
 	  
-	  msg.say('Ok allora qual è la ragione sociale?').route('indirizzo', invoiceData,20)    
-	})
-	
-	
-	slapp.route('indirizzo', (msg,invoiceData) => {
-	  var response = (msg.body.event && msg.body.event.text) || ''
-	  
+	  //Imposto la ragione sociale che mi ha detto
 	  invoiceData["nome"] = response;
 	  
 	  msg.say("Bene che abbiamo venduto qualcosa a "+response+", ma dimmi, che indirizzo email ha?").route('articolo', invoiceData,20) 
@@ -339,7 +336,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 				            "author_link": resoconto["link_doc"],
 				            "title": invoiceData["lista_articoli"][0]["prezzo_lordo"], //aggiornare con totale
 				            "text": "Altre info",
-				            "fields": [[resoconto["prodotti_venduti"]],
+				            "fields": [resoconto["prodotti_venduti"]],
 				            "ts": 123456789
 				        }
 				    ]

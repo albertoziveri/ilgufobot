@@ -211,9 +211,9 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    
 		});	
 		
+		var products =[];
 		//callback imposto variabile globale
 		function showProdotti(prodotti) {
-		 var products =[];
 		 products.push(prodotti);
 		}
 

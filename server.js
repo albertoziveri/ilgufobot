@@ -308,12 +308,12 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    resoconto["id"] = callback["id"];
 		    resoconto["nome"] = invoiceData["nome"];
 		    resoconto["link_doc"] = callback["link_doc"];
-		    resoconto["link_doc"] = invoiceData["nome"];
 		    
 		    //Creo resoconto per ogni prodotto
 		    resoconto["prodotti_venduti"] = [];
-		    var object = invoiceData["lista_articoli"];
-			Object.keys(object).forEach(function(key) {
+		    var objectProducts = invoiceData["lista_articoli"];
+		    console.log(objectProducts);
+			Object.keys(objectProducts).forEach(function() {
 				var prodotto_venduto = {};
 			    prodotto_venduto["title"] =object["nome"];
 			    prodotto_venduto["value"] =object["descrizione"];

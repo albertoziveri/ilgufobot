@@ -315,15 +315,14 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    
 		    //Creo resoconto per ogni prodotto
 		    resoconto["prodotti_venduti"] = [];
-			Object.keys(invoiceData["lista_articoli"]).forEach(function(key) {
+		    var object = invoiceData["lista_articoli"];
+			Object.keys(object).forEach(function(key) {
 				var prodotto_venduto = {};
 			    console.log(key, obj[key]);
-			    prodotto_venduto["name"] =obj["nome"];
-			    prodotto_venduto["descrizione"] =obj["descrizione"];
-			    prodotto_venduto["quantita"] =obj["quantita"];
-			    prodotto_venduto["prezzo"] =obj["prezzo_lordo"];
+			    prodotto_venduto["title"] =object["nome"];
+			    prodotto_venduto["value"] =object["descrizione"];
+			    prodotto_venduto["short"] =true;
 			    console.log(prodotto_venduto);
-			    
 			    resoconto["prodotti_venduti"].push(prodotto_venduto);
 			});		    
 		    
@@ -340,7 +339,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 				            "author_link": resoconto["link_doc"],
 				            "title": invoiceData["lista_articoli"][0]["prezzo_lordo"], //aggiornare con totale
 				            "text": "Altre info",
-				            "fields": [resoconto["prodotti_venduti"]],
+				            "fields": [[resoconto["prodotti_venduti"]],
 				            "ts": 123456789
 				        }
 				    ]

@@ -309,6 +309,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	            return
 	        }
 	        var doc_id = body.new_id;
+	        console_log(doc_id);
 	        callback(doc_id);
 	    })
 	    
@@ -355,6 +356,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  dataEmail["api_key"] = "841b369a3268661b0ca1e768337232b6";
 	  dataEmail["mail_mittente"] = "crew@fromowl.com";
 	  dataEmail["mail_destinatario"] = resoconto["email"];
+	  dataEmail["id"] = resoconto["id"];
 	  dataEmail["includi_documento"] = true;
 	  dataEmail["invia_ddt"] = false;
 	  dataEmail["invia_fa"] = false;

@@ -187,9 +187,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  
 	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?") 
 	  
-	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE
-	  	var prodotti =[] 
-	  	
+	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE 
 		base('tabella1').select({
 		    // Selecting the first 3 records in Main View:
 		    maxRecords: 3,
@@ -213,10 +211,12 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    
 		});	
 		
+		//callback imposto variabile globale
 		function showProdotti(prodotti) {
-		 // We want this to show the "results" from the callback function.
-		 console.log(prodotti);
+		 var products =[];
+		 products.push(prodotti);
 		}
+
 		//costruisco il messaggio
 		var message = {}
 		message["text"] = "Ciao";
@@ -225,8 +225,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		message["attachments"][0]["fallback"] = "Quale prodotto?"; 
 		message["attachments"][0]["callback_id"] = "doit_confirm_callback"; 
         message["attachments"][0]["actions"] = [];
+
 		
-		prodotti.forEach(function myFunction(item, index) {
+		products.forEach(function myFunction(item, index) {
+			
 			var prodotto = {};
 	        prodotto["name"] ="answer";
 	        prodotto["text"] =item;

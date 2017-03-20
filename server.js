@@ -207,7 +207,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    fetchNextPage();
 		    
 		
-		}, function done(err) {
+		}, function done(err,prodotti) {
 		    if (err) { console.error(err); return; }
 		    console.log(prodotti);
 		    

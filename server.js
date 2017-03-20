@@ -206,45 +206,46 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    // If there are no more records, `done` will get called.
 		    fetchNextPage();
 		    
+		    show_results(prodotti);
 		
 		}, function done(err,prodotti) {
 		    if (err) { console.error(err); return; }
-		    console.log(prodotti);
+
 		    
 		});	
 		
-		var products =[];
-		//callback imposto variabile globale
-		function showProdotti(prodotti) {
-		 products.push(prodotti);
-		 console.log(products);
-		}
 
-		//costruisco il messaggio
-		var message = {}
-		message["text"] = "Ciao";
-		message["attachments"] = [{}];
-		message["attachments"][0]["text"] = "Quale prodotto?";
-		message["attachments"][0]["fallback"] = "Quale prodotto?"; 
-		message["attachments"][0]["callback_id"] = "doit_confirm_callback"; 
-        message["attachments"][0]["actions"] = [];
-
-		
-		products.forEach(function myFunction(item, index) {
+		function show_results(prodotti) {
+			 // We want this to show the "results" from the callback function.
+			 alert(load_values_from_server);
 			
-			var prodotto = {};
-	        prodotto["name"] ="answer";
-	        prodotto["text"] =item;
-	        prodotto["type"] ="button";
-	         prodotto["value"] =item;
-	        message["attachments"][0]["actions"].push(prodotto);
-		});
-		
-		var myJSON = JSON.stringify(message);
-		
-		//ora chiedo quale prodotto vuole
-		msg.say(myJSON)
-		.route('dettagli_articolo', invoiceData,20)
+			//costruisco il messaggio
+			var message = {}
+			message["text"] = "Ciao";
+			message["attachments"] = [{}];
+			message["attachments"][0]["text"] = "Quale prodotto?";
+			message["attachments"][0]["fallback"] = "Quale prodotto?"; 
+			message["attachments"][0]["callback_id"] = "doit_confirm_callback"; 
+	        message["attachments"][0]["actions"] = [];
+	
+			
+			prodotti.forEach(function myFunction(item, index) {
+				
+				var prodotto = {};
+		        prodotto["name"] ="answer";
+		        prodotto["text"] =item;
+		        prodotto["type"] ="button";
+		         prodotto["value"] =item;
+		        message["attachments"][0]["actions"].push(prodotto);
+			});
+			
+			var myJSON = JSON.stringify(message);
+			
+			//ora chiedo quale prodotto vuole
+			msg.say(myJSON);
+			msg.say(message)
+			.route('dettagli_articolo', invoiceData,20)
+		}
 	  
 	})
 	

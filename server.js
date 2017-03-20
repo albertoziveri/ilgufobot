@@ -199,6 +199,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		
 		    records.forEach(function(record) {
 		       prodotti.push(record.get('Name'));
+		       console.log(record.get('Name'));
 		    });
 		
 		    // To fetch the next page of records, call `fetchNextPage`.

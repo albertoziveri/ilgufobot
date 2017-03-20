@@ -7,7 +7,7 @@ const Context = require('slapp-context-beepboop')
 
 ////ALBIADD
 const request = require("request")
-const base = require('airtable').base('keyzbVDpl49AwQZJX');
+const base = require('airtable/lib/airtable.js').base('keyzbVDpl49AwQZJX');
 
 //END ALBIADD
 

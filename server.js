@@ -282,31 +282,32 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	        
 	        //Prendo i dettagli del nuovo documento
 	        get_invoice_details(doc_id);
-		        function get_invoice_details(doc_id) {
-			        
-			        var invoicedatafinal = {"api_uid": "12078","api_key": "841b369a3268661b0ca1e768337232b6","id": doc_id,"token": "1234567890abcdefghijklmnopqrstuv"}
-					request({url: "https://api.fattureincloud.it:443/v1/fatture/dettagli",method: "POST",json: invoicedatafinal}, function (error, response, body) {
-				        if (!error && response.statusCode === 200) { console.log(body) }
-				        else {
-							msg.say("Fattura non inserita, procedere manualmente.")
-				            console.log("error: " + error)
-				            console.log("response.statusCode: " + response.statusCode)
-				            console.log("response.statusText: " + response.statusText)
-				            return
-				        }
-				        
-				        //dettagli fattura
-				        var callback =[];
-				         callback["link_doc"] = body.dettagli_documento.link_doc;
-				         callback["id"] = doc_id;
-				        console.log(callback["link_doc"]);
-				        
-				        //Callback procedo
-				        callback(callback);
-				    })		        
-				}
 				
 	    })
+	    
+        function get_invoice_details(doc_id) {
+	        
+	        var invoicedatafinal = {"api_uid": "12078","api_key": "841b369a3268661b0ca1e768337232b6","id": doc_id,"token": "1234567890abcdefghijklmnopqrstuv"}
+			request({url: "https://api.fattureincloud.it:443/v1/fatture/dettagli",method: "POST",json: invoicedatafinal}, function (error, response, body) {
+		        if (!error && response.statusCode === 200) { console.log(body) }
+		        else {
+					msg.say("Fattura non inserita, procedere manualmente.")
+		            console.log("error: " + error)
+		            console.log("response.statusCode: " + response.statusCode)
+		            console.log("response.statusText: " + response.statusText)
+		            return
+		        }
+		        
+		        //dettagli fattura
+		        var callback =[];
+		         callback["link_doc"] = body.dettagli_documento.link_doc;
+		         callback["id"] = doc_id;
+		        console.log(callback["link_doc"]);
+		        
+		        //Callback procedo
+		        callback(callback);
+		    })		        
+		}
 	    
 	    
 		msg

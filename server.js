@@ -121,7 +121,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 
 
-//PROCESSO AGGIUNTA FATTURA
+	/*******
+		NUOVA VENDITA
+	**/////
+	
 	// if a user says "do it" in a DM
 	slapp.message('aggiungi fattura', 'direct_message', (msg) => {
 	  // respond with an interactive message with buttons Yes and No
@@ -314,9 +317,40 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	    })
 	    
 	    
+		msg
+		.say(
+			{
+			    "attachments": [
+			        {
+			            "fallback": "Required plain-text summary of the attachment.",
+			            "color": "#36a64f",
+			            "pretext": "Ecco un resoconto della tua fattura, clicca sul link grigio per vedere il PDF.",
+			            "author_name": "Fattura a"+invoiceData["name"],
+			            "author_link": "http://www.fattureincloud.com",
+			            "title": "Totale 100 €",
+			            "text": "Altre info",
+			            "fields": [
+			                {
+			                    "title": "Prodotto 1",
+			                    "value": "10 unità a 10 euro ciascuna",
+			                    "short": true
+			                },
+							{
+			                    "title": "Prodotto 2, 10 euro, 10 unità",
+			                    "value": "10 unità a 10 euro ciascuna",
+			                    "short": true
+			                }
+			            ],
+			            "ts": 123456789
+			        }
+			    ]
+			}
+		)
+	    
 	    function callback(doc_id) {
 		    resoconto["email"] = invoiceData["indirizzo_via"];
 		    resoconto["id"] = doc_id;
+		    resoconto["nome"] = invoiceData["nome"];
 		    
 			msg
 			.say({
@@ -354,7 +388,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  var dataEmail = {}
 	  dataEmail["api_uid"] = "12078";
 	  dataEmail["api_key"] = "841b369a3268661b0ca1e768337232b6";
-	  dataEmail["mail_mittente"] = "crew@fromowl.com";
+	  dataEmail["mail_mittente"] = "no-reply@fattureincloud.it";
 	  dataEmail["mail_destinatario"] = resoconto["email"];
 	  dataEmail["id"] = resoconto["id"];
 	  dataEmail["includi_documento"] = true;
@@ -362,9 +396,9 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  dataEmail["invia_fa"] = false;
 	  dataEmail["invia_copia"] = false;
 	  dataEmail["includi_allegato"] = true;
-	  dataEmail["allega_pdf"] = true;
-		dataEmail["oggetto"] = "Our invoice for you";
-		  dataEmail["messaggio"] = "Hello, to see our invoice here.<br /> {{allegati}} Best regards,Divisible Odd srls";
+	  dataEmail["allega_pdf"] = true;	
+	  dataEmail["oggetto"] = "Our invoice for you";
+	  dataEmail["messaggio"] = "Hello "+resoconto["name"]+", here's our invoice our your last purchase.<br /> {{allegati}} <br />Best regards, Divisible Odd srls";
 		  
 	    // QPX REST API URL (I censored my api key)
 	    var url = "https://api.fattureincloud.it:443/v1/fatture/inviamail"
@@ -395,9 +429,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  
 	})
 
-/*end creazione fattura*/
 
-
+	/*******
+		END VENDITA TERMINATA
+	**/////
 
 
 

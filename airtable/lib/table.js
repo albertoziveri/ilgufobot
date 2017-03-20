@@ -3,7 +3,7 @@
 var _ = require('lodash');
 
 var assert = require('assert');
-var async = require('async');
+var async = require('./async');
 
 var AirtableError = require('./airtable_error');
 var Class = require('./class');

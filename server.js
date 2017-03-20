@@ -316,7 +316,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    //Creo resoconto per ogni prodotto
 		    resoconto["prodotti_venduti"] = [];
 			Object.keys(invoiceData["lista_articoli"]).forEach(function(key) {
-				var prodotto_venduto {};
+				var prodotto_venduto = {};
 			    console.log(key, obj[key]);
 			    prodotto_venduto["name"] =obj["nome"];
 			    prodotto_venduto["descrizione"] =obj["descrizione"];

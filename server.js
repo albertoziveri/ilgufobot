@@ -130,19 +130,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  // respond with an interactive message with buttons Yes and No
 	  var invoiceData = {};
 	  msg
-	  .say({
-	    text: '',
-	    attachments: [
-	      {
-	        text: 'Are you sure?',
-	        fallback: 'Are you sure?',
-	        callback_id: 'doit_confirm_callback',
-	        actions: [
-	          { name: 'answer', text: 'Yes', type: 'button', value: 'yes' },
-	          { name: 'answer', text: 'No', type: 'button', value: 'no' }
-	        ]
-	      }]
-	    })
+	  .say("Certo!")
 	  // handle the response with this route passing state
 	  // and expiring the conversation after 20 seconds
 	  .route('company', invoiceData, 20)
@@ -150,18 +138,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	//ragione sociale
 	slapp.route('company', (msg,invoiceData) => {
-	  let answer = msg.body.actions[0].value
-	  if (answer !== 'yes') {
-	    // the answer was not affirmative
-	    msg.respond(msg.body.response_url, {
-	      text: `OK, not doing it. Whew that was close :cold_sweat:`,
-	      delete_original: true
-	    })
-	    // notice we did NOT specify a route because the conversation is over
-	    return
-	  }
-	  
-	  //INIZIO A RIEMPIRE dato che ha risposto SI
 	  invoiceData["api_uid"] = "12078";
 	  invoiceData["api_key"] = "841b369a3268661b0ca1e768337232b6";
 	  invoiceData["id_template"] = "2201";
@@ -188,7 +164,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	  
 	  invoiceData["indirizzo_via"] = response;
 	  
-	  msg.say("Gli manderemo la fattura a"+response+", ora puoi dirmi il nome del primo prodotto venduto?") 
+	  msg.say("L'email del cliente è "+response+", quale prodotto hai venduto?") 
 	  
 	  //ORA FACCIO SELEZIONARE IL PRODOTTO DA AIRTABLE 
 	  var prodotti = [];
@@ -201,7 +177,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 			
 		    records.forEach(function(record) {
 		       prodotti.push(record.get('Name'));
-		       console.log(prodotti);
 		    });
 		
 		    // To fetch the next page of records, call `fetchNextPage`.
@@ -213,8 +188,6 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		
 		}, function done(err,prodotti) {
 		    if (err) { console.error(err); return; }
-
-		    
 		});	
 		
 
@@ -320,6 +293,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		msg
 		.say(
 			{
+				text: ':confetti_ball: ',
 			    "attachments": [
 			        {
 			            "fallback": "Required plain-text summary of the attachment.",

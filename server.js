@@ -305,7 +305,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		        console.log(callback["link_doc"]);
 		        
 		        //Callback procedo
-		        callback(callback);
+		        wantEmail(callback);
 		    })		        
 		}
 	    
@@ -341,7 +341,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 			}
 		)
 	    
-	    function callback(callback) {
+	    function wantEmail(callback) {
 		    resoconto["email"] = invoiceData["indirizzo_via"];
 		    resoconto["id"] = callback["id"];
 		    resoconto["nome"] = invoiceData["nome"];

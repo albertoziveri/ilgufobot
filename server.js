@@ -155,7 +155,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 	
 	slapp.route('articolo', (msg,invoiceData) => {
 	  var response = (msg.body.event && msg.body.event.text) || ''
-	  
+	  console.log(response);
 	  invoiceData["indirizzo_via"] = response;
 	  
 	  msg.say("L'email del cliente è "+response+", quale prodotto hai venduto?") 

@@ -315,8 +315,8 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 		    console.log(objectProducts);
 			Object.keys(objectProducts).forEach(function() {
 				var prodotto_venduto = {};
-			    prodotto_venduto["title"] =object["nome"];
-			    prodotto_venduto["value"] =object["descrizione"];
+			    prodotto_venduto["title"] =objectProducts["nome"];
+			    prodotto_venduto["value"] =objectProducts[0]["descrizione"];
 			    prodotto_venduto["short"] =true;
 			    console.log(prodotto_venduto);
 			    resoconto["prodotti_venduti"].push(prodotto_venduto);

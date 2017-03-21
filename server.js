@@ -491,7 +491,24 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 // Podio funziona?
 slapp.message('podio', ['mention', 'direct_message'], (msg) => {
-  msg.say(HELP_TEXT)
+	var podio = new PodioJS({
+	  authType: 'password', 
+	  clientId: "ilgufo", 
+	  clientSecret: "2JWKwRyvN0KIJaFt8i640PTT8pmG1EVSpiP24BF88WjP6EE0Bu2g5shyQrSWNGr8" 
+	});
+	var username = 'crew@fromowl.com';
+	var password = "Filiberto90";
+	
+	
+	podio.isAuthenticated().then(function() {
+	  // Ready to make API calls...  
+	}).catch(function(err) {
+	  podio.authenticateWithCredentials(username, password, function() {
+	    podio.request('get', '/user/status', null, function(responseData) {
+		  console.log(profile: responseData.profile);
+		});
+	  });
+	});	
 })
 
 // Catch-all for any other responses not handled above

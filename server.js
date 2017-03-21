@@ -505,7 +505,7 @@ slapp.message('podio', ['mention', 'direct_message'], (msg) => {
 	}).catch(function(err) {
 	  podio.authenticateWithCredentials(username, password, function() {
 	    podio.request('get', '/user/status', null, function(responseData) {
-		  console.log(profile: responseData.profile);
+		  console.log(responseData);
 		});
 	  });
 	});	

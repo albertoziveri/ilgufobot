@@ -16,6 +16,8 @@ Airtable.configure({
 });
 var base = Airtable.base('app41vRUJdU03aa4q');
 
+var podio = require('./podio-js/lib/podio-js.js');
+
 //END ALBIADD
 
 
@@ -487,7 +489,10 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 
 
-
+// Podio funziona?
+slapp.message('podio', ['mention', 'direct_message'], (msg) => {
+  msg.say(HELP_TEXT)
+})
 
 // Catch-all for any other responses not handled above
 slapp.message('.*', ['direct_mention', 'direct_message'], (msg) => {

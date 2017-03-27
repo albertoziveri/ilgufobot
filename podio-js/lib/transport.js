@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var URI = require('URIjs');
+var URI = require('../node_modules/URIjs/src/URI.js');
 var request = require('superagent');
 var Promise = require('es6-promise');
 

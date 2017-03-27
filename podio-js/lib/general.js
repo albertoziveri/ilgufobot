@@ -1,4 +1,4 @@
-var URI = require('URIjs');
+var URI = require('../node_modules/URIjs/src/URI.js');
 var _ = require('lodash');
 var PodioErrors = require('./PodioErrors');
 

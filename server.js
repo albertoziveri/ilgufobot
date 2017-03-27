@@ -491,7 +491,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 // Podio funziona?
 slapp.message('podio', ['mention', 'direct_message'], (msg) => {
-	var podio = new PodioJS({
+	var podio = new Podio({
 	  authType: 'password', 
 	  clientId: "ilgufo", 
 	  clientSecret: "2JWKwRyvN0KIJaFt8i640PTT8pmG1EVSpiP24BF88WjP6EE0Bu2g5shyQrSWNGr8" 

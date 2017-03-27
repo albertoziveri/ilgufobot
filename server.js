@@ -16,7 +16,7 @@ Airtable.configure({
 });
 var base = Airtable.base('app41vRUJdU03aa4q');
 
-var podio = require('./podio-js/lib/podio-js.js');
+var PodioJS = require('./podio-js/lib/podio-js.js');
 
 //END ALBIADD
 
@@ -491,7 +491,7 @@ slapp.message('attachment', ['mention', 'direct_message'], (msg) => {
 
 // Podio funziona?
 slapp.message('podio', ['mention', 'direct_message'], (msg) => {
-	var podio = new Podio({
+	var podio = new PodioJS({
 	  authType: 'password', 
 	  clientId: "ilgufo", 
 	  clientSecret: "2JWKwRyvN0KIJaFt8i640PTT8pmG1EVSpiP24BF88WjP6EE0Bu2g5shyQrSWNGr8" 

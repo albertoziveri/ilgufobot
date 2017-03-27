@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var URI = require('../node_modules/URIjs/src/URI.js');
-var request = require('superagent');
+var request = require('../node_modules/superagent/superagent.js');
 
 var OAuth = require('./PodioOAuth');
 var PodioErrors = require('./PodioErrors');
